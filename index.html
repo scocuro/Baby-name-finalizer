@@ -18,7 +18,12 @@
       --shadow: 0 10px 30px rgba(15, 23, 42, 0.12);
       --radius: 24px;
     }
-    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
     html, body {
       margin: 0;
       width: 100%;
@@ -28,7 +33,10 @@
       color: var(--text);
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans KR", Arial, sans-serif;
     }
-    body { position: relative; }
+
+    body {
+      position: relative;
+    }
 
     .drawer {
       position: fixed;
@@ -38,7 +46,11 @@
       transition: transform .24s ease;
       pointer-events: none;
     }
-    .drawer.open { transform: translateY(0); }
+
+    .drawer.open {
+      transform: translateY(0);
+    }
+
     .drawer-panel {
       background: rgba(255,255,255,.98);
       backdrop-filter: blur(10px);
@@ -48,17 +60,20 @@
       pointer-events: auto;
       overflow: hidden;
     }
+
     .drawer-body {
       max-height: min(62vh, 430px);
       overflow-y: auto;
       padding: 14px 14px 12px;
     }
+
     .toggle-wrap {
       display: flex;
       justify-content: center;
       margin-top: 8px;
       pointer-events: auto;
     }
+
     .toggle-btn {
       border: none;
       border-radius: 999px;
@@ -71,9 +86,16 @@
       display: inline-flex;
       align-items: center;
       gap: 8px;
+      cursor: pointer;
     }
-    .arrow { transition: transform .2s ease; }
-    .drawer.open .arrow { transform: rotate(180deg); }
+
+    .arrow {
+      transition: transform .2s ease;
+    }
+
+    .drawer.open .arrow {
+      transform: rotate(180deg);
+    }
 
     .title-row {
       display: flex;
@@ -82,24 +104,28 @@
       align-items: flex-start;
       margin-bottom: 10px;
     }
+
     .title {
       font-size: 18px;
       font-weight: 900;
       letter-spacing: -0.03em;
       line-height: 1.2;
     }
+
     .subtitle {
       font-size: 11px;
       color: var(--muted);
       font-weight: 700;
       margin-top: 4px;
     }
+
     .actions {
       display: flex;
       gap: 8px;
       flex-wrap: wrap;
       justify-content: flex-end;
     }
+
     .pill {
       border: none;
       border-radius: 999px;
@@ -108,21 +134,32 @@
       font-weight: 900;
       color: #1f2937;
       background: #eef2ff;
+      cursor: pointer;
     }
-    .pill.red { background: #fee2e2; color: #991b1b; }
-    .pill.gray { background: #f3f4f6; color: #374151; }
+
+    .pill.red {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+
+    .pill.gray {
+      background: #f3f4f6;
+      color: #374151;
+    }
 
     .meta-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 8px;
     }
+
     .meta-card {
       background: #f8fafc;
       border: 1px solid var(--line);
       border-radius: 16px;
       padding: 10px;
     }
+
     .meta-card label {
       display: block;
       font-size: 11px;
@@ -130,6 +167,7 @@
       color: var(--muted);
       margin-bottom: 6px;
     }
+
     .meta-card input {
       width: 100%;
       border: 1px solid var(--line);
@@ -152,19 +190,24 @@
       color: #374151;
     }
 
-    .chip-section { margin-top: 10px; }
+    .chip-section {
+      margin-top: 10px;
+    }
+
     .chip-title {
       font-size: 12px;
       font-weight: 900;
       color: var(--muted);
       margin-bottom: 6px;
     }
+
     .chips {
       display: flex;
       flex-wrap: wrap;
       gap: 6px;
       min-height: 24px;
     }
+
     .chip {
       display: inline-flex;
       align-items: center;
@@ -177,16 +220,19 @@
       background: #fff;
       color: #374151;
     }
+
     .chip.exclude {
       background: #fff7ed;
       color: #9a3412;
       border-color: #fed7aa;
     }
+
     .chip.fixed {
       background: #eff6ff;
       color: #1d4ed8;
       border-color: #bfdbfe;
     }
+
     .chip button {
       border: none;
       background: transparent;
@@ -195,6 +241,7 @@
       font-weight: 900;
       padding: 0;
       line-height: 1;
+      cursor: pointer;
     }
 
     .main {
@@ -206,6 +253,7 @@
       align-items: center;
       justify-content: center;
     }
+
     .deck {
       position: relative;
       width: 100%;
@@ -213,6 +261,7 @@
       max-width: 520px;
       max-height: 860px;
     }
+
     .card {
       position: absolute;
       inset: 0;
@@ -231,7 +280,11 @@
       padding: 16px;
       transition: transform .22s ease, opacity .22s ease;
     }
-    .card.dragging { transition: none; }
+
+    .card.dragging {
+      transition: none;
+    }
+
     .name {
       font-size: clamp(54px, 14vw, 90px);
       line-height: 1;
@@ -239,6 +292,7 @@
       letter-spacing: -0.06em;
       margin-bottom: 16px;
     }
+
     .hint {
       font-size: 13px;
       color: var(--muted);
@@ -246,6 +300,7 @@
       line-height: 1.55;
       font-weight: 700;
     }
+
     .tag-row {
       display: flex;
       gap: 8px;
@@ -253,6 +308,7 @@
       justify-content: center;
       margin-top: 12px;
     }
+
     .mini-tag {
       padding: 8px 12px;
       border-radius: 999px;
@@ -278,6 +334,7 @@
       grid-template-columns: repeat(4, 1fr);
       gap: 8px;
     }
+
     .footer-btn {
       border: none;
       border-radius: 16px;
@@ -286,11 +343,28 @@
       font-weight: 900;
       color: #374151;
       background: #f3f4f6;
+      cursor: pointer;
     }
-    .footer-btn.save { background: #ecfdf5; color: #047857; }
-    .footer-btn.discard { background: #fef2f2; color: #b91c1c; }
-    .footer-btn.exclude { background: #fff7ed; color: #c2410c; }
-    .footer-btn.fix { background: #eff6ff; color: #1d4ed8; }
+
+    .footer-btn.save {
+      background: #ecfdf5;
+      color: #047857;
+    }
+
+    .footer-btn.discard {
+      background: #fef2f2;
+      color: #b91c1c;
+    }
+
+    .footer-btn.exclude {
+      background: #fff7ed;
+      color: #c2410c;
+    }
+
+    .footer-btn.fix {
+      background: #eff6ff;
+      color: #1d4ed8;
+    }
 
     .overlay {
       position: fixed;
@@ -303,7 +377,11 @@
       justify-content: center;
       padding: 16px;
     }
-    .overlay.show { display: flex; }
+
+    .overlay.show {
+      display: flex;
+    }
+
     .modal {
       width: min(440px, 100%);
       background: #fff;
@@ -311,26 +389,31 @@
       box-shadow: 0 20px 46px rgba(0,0,0,.18);
       overflow: hidden;
     }
+
     .modal-head {
       padding: 18px 18px 10px;
     }
+
     .modal-title {
       font-size: 18px;
       font-weight: 900;
       margin-bottom: 6px;
       letter-spacing: -0.03em;
     }
+
     .modal-desc {
       font-size: 13px;
       color: var(--muted);
       line-height: 1.55;
       font-weight: 700;
     }
+
     .modal-body {
       padding: 0 18px 18px;
       display: grid;
       gap: 8px;
     }
+
     .choice-btn {
       border: none;
       width: 100%;
@@ -342,22 +425,41 @@
       color: #111827;
       background: #f8fafc;
       border: 1px solid var(--line);
+      cursor: pointer;
     }
+
     .choice-btn.soft-red {
       background: #fff7ed;
       border-color: #fed7aa;
       color: #9a3412;
     }
+
     .choice-btn.soft-blue {
       background: #eff6ff;
       border-color: #bfdbfe;
       color: #1d4ed8;
     }
+
     .choice-btn.cancel {
       background: #f3f4f6;
       color: #374151;
     }
 
+    /* 보관함 뒤 배경만 블러 */
+    .saved-mask {
+      position: fixed;
+      inset: 0;
+      z-index: 34;
+      display: none;
+      background: rgba(17,24,39,.28);
+      backdrop-filter: blur(4px);
+    }
+
+    .saved-mask.show {
+      display: block;
+    }
+
+    /* 보관함 패널은 블러 없이 선명하게 */
     .saved-sheet {
       position: fixed;
       inset: auto 0 0 0;
@@ -371,8 +473,13 @@
       max-height: 78vh;
       display: flex;
       flex-direction: column;
+      will-change: transform;
     }
-    .saved-sheet.show { transform: translateY(0); }
+
+    .saved-sheet.show {
+      transform: translateY(0);
+    }
+
     .saved-head {
       padding: 16px;
       border-bottom: 1px solid var(--line);
@@ -380,26 +487,35 @@
       justify-content: space-between;
       align-items: center;
       gap: 8px;
+      background: #fff;
+      border-top-left-radius: 24px;
+      border-top-right-radius: 24px;
     }
+
     .saved-title {
       font-size: 17px;
       font-weight: 900;
     }
+
     .saved-tools {
       display: flex;
       gap: 8px;
       flex-wrap: wrap;
     }
+
     .saved-body {
       overflow: auto;
       padding: 14px 16px 24px;
       min-height: 180px;
+      background: #fff;
     }
+
     .saved-grid {
       display: grid;
       grid-template-columns: repeat(2, minmax(0,1fr));
       gap: 8px;
     }
+
     .saved-item {
       background: #f8fafc;
       border: 1px solid var(--line);
@@ -410,6 +526,7 @@
       text-align: center;
       letter-spacing: -0.03em;
     }
+
     .empty {
       color: var(--muted);
       font-size: 14px;
@@ -438,16 +555,28 @@
       text-align: center;
       line-height: 1.4;
     }
+
     .toast.show {
       opacity: 1;
       transform: translateX(-50%) translateY(0);
     }
 
     @media (max-width: 480px) {
-      .meta-grid { grid-template-columns: 1fr; }
-      .saved-grid { grid-template-columns: 1fr 1fr; }
-      .card { height: min(68vh, 520px); }
-      .footer-bar { grid-template-columns: repeat(2, 1fr); }
+      .meta-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .saved-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .card {
+        height: min(68vh, 520px);
+      }
+
+      .footer-bar {
+        grid-template-columns: repeat(2, 1fr);
+      }
     }
   </style>
 </head>
@@ -520,7 +649,8 @@
     </div>
   </div>
 
-  <div class="overlay" id="savedMask"></div>
+  <div class="saved-mask" id="savedMask"></div>
+
   <div class="saved-sheet" id="savedSheet">
     <div class="saved-head">
       <div class="saved-title">보관함</div>
@@ -534,7 +664,12 @@
 
   <div class="toast" id="toast"></div>
 
-  <input type="file" id="importFileInput" accept=".json,application/json" hidden />
+  <input
+    type="file"
+    id="importFileInput"
+    accept=".json,application/json,text/plain"
+    style="position:fixed; left:-99999px; top:-99999px; width:1px; height:1px; opacity:0;"
+  />
 
   <script>
     const syllables = [
@@ -553,8 +688,8 @@
       '휘', '희'
     ];
 
-    const STORAGE_KEY = 'kang_name_relay_v6';
-    const VERSION = 6;
+    const STORAGE_KEY = 'kang_name_relay_v7';
+    const VERSION = 7;
     const syllablesHash = simpleHash(syllables.join('|'));
 
     const allNames = [];
@@ -630,7 +765,12 @@
     });
 
     exportBtn.addEventListener('click', exportSaveFile);
-    importBtn.addEventListener('click', () => importFileInput.click());
+
+    importBtn.addEventListener('click', () => {
+      importFileInput.value = '';
+      importFileInput.click();
+    });
+
     importFileInput.addEventListener('change', handleImportFile);
 
     resetBtn.addEventListener('click', () => {
@@ -638,7 +778,10 @@
         title: '전체 상태 초기화',
         desc: '현재 브라우저에 저장된 진행 상태를 모두 지웁니다. 정말 초기화할까요?',
         choices: [
-          { label: '초기화하기', className: 'soft-red', onClick: () => {
+          {
+            label: '초기화하기',
+            className: 'soft-red',
+            onClick: () => {
               state = defaultState();
               projectNameInput.value = state.projectName;
               editorNameInput.value = '';
@@ -648,7 +791,11 @@
               showToast('초기화했습니다');
             }
           },
-          { label: '취소', className: 'cancel', onClick: closeModal }
+          {
+            label: '취소',
+            className: 'cancel',
+            onClick: closeModal
+          }
         ]
       });
     });
@@ -656,12 +803,15 @@
     document.getElementById('saveActionBtn').addEventListener('click', () => {
       if (currentCard) swipeAction('left', currentCard);
     });
+
     document.getElementById('discardActionBtn').addEventListener('click', () => {
       if (currentCard) swipeAction('right', currentCard);
     });
+
     document.getElementById('excludeActionBtn').addEventListener('click', () => {
       if (currentCard) promptExclude(currentCard.data);
     });
+
     document.getElementById('fixActionBtn').addEventListener('click', () => {
       if (currentCard) promptFixStep1(currentCard.data);
     });
@@ -760,14 +910,17 @@
         savedBody.innerHTML = '<div class="empty">아직 보관한 이름이 없습니다.<br>카드를 왼쪽으로 스와이프하면 보관됩니다.</div>';
         return;
       }
+
       const grid = document.createElement('div');
       grid.className = 'saved-grid';
+
       [...state.saved].reverse().forEach(item => {
         const div = document.createElement('div');
         div.className = 'saved-item';
         div.textContent = item.full;
         grid.appendChild(div);
       });
+
       savedBody.innerHTML = '';
       savedBody.appendChild(grid);
     }
@@ -786,6 +939,7 @@
       deck.innerHTML = '';
 
       const next = pickRandomRemaining();
+
       if (!next) {
         const empty = document.createElement('div');
         empty.className = 'card';
@@ -881,11 +1035,14 @@
 
       card.addEventListener('pointerup', endDrag);
       card.addEventListener('pointercancel', endDrag);
-      card.addEventListener('lostpointercapture', () => { if (dragging) endDrag(); });
+      card.addEventListener('lostpointercapture', () => {
+        if (dragging) endDrag();
+      });
     }
 
     function swipeAction(direction, payload) {
       const { el, data } = payload;
+
       if (direction === 'left') {
         addSaved(data);
         markSeen(data.id);
@@ -896,6 +1053,7 @@
         animateOut(el, window.innerWidth * 1.2, -18);
         showToast(`버림: ${data.full}`);
       }
+
       setTimeout(renderAll, 180);
     }
 
@@ -930,7 +1088,11 @@
               showToast(`'${data.second}'를 배제했습니다`);
             }
           },
-          { label: '취소', className: 'cancel', onClick: closeModal }
+          {
+            label: '취소',
+            className: 'cancel',
+            onClick: closeModal
+          }
         ]
       });
     }
@@ -950,7 +1112,11 @@
             className: 'soft-blue',
             onClick: () => promptFixStep2(data.second)
           },
-          { label: '취소', className: 'cancel', onClick: closeModal }
+          {
+            label: '취소',
+            className: 'cancel',
+            onClick: closeModal
+          }
         ]
       });
     }
@@ -982,7 +1148,11 @@
               showToast(`끝 '${char}' 고정`);
             }
           },
-          { label: '취소', className: 'cancel', onClick: closeModal }
+          {
+            label: '취소',
+            className: 'cancel',
+            onClick: closeModal
+          }
         ]
       });
     }
@@ -991,6 +1161,7 @@
       modalTitle.textContent = title;
       modalDesc.textContent = desc || '';
       modalBody.innerHTML = '';
+
       choices.forEach(choice => {
         const btn = document.createElement('button');
         btn.className = `choice-btn ${choice.className || ''}`;
@@ -998,6 +1169,7 @@
         btn.addEventListener('click', choice.onClick);
         modalBody.appendChild(btn);
       });
+
       modalOverlay.classList.add('show');
     }
 
@@ -1040,7 +1212,12 @@
 
     function addSaved(item) {
       if (!state.saved.some(x => x.id === item.id)) {
-        state.saved.push({ id: item.id, full: item.full, first: item.first, second: item.second });
+        state.saved.push({
+          id: item.id,
+          full: item.full,
+          first: item.first,
+          second: item.second
+        });
         persist();
       }
     }
@@ -1081,49 +1258,71 @@
         ...state,
         exportedAt: new Date().toISOString()
       };
+
       const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json;charset=utf-8' });
       const a = document.createElement('a');
       const safeProject = (state.projectName || 'kang').replace(/[^\w가-힣-]+/g, '_');
       const safeEditor = (state.editorName || 'user').replace(/[^\w가-힣-]+/g, '_');
       const stamp = new Date().toISOString().replace(/[:.]/g, '-');
+
       a.href = URL.createObjectURL(blob);
       a.download = `${safeProject}_${safeEditor}_${stamp}.json`;
       document.body.appendChild(a);
       a.click();
       a.remove();
+
       setTimeout(() => URL.revokeObjectURL(a.href), 500);
       renderStats();
       showToast('세이브파일을 내보냈습니다');
     }
 
-    function handleImportFile(event) {
+    async function handleImportFile(event) {
       const file = event.target.files && event.target.files[0];
       if (!file) return;
 
-      const reader = new FileReader();
-      reader.onload = () => {
-        try {
-          const parsed = JSON.parse(reader.result);
-          if (parsed.syllablesHash !== syllablesHash) {
-            alert('이 파일은 현재 음절 리스트와 맞지 않습니다.');
-            return;
-          }
-          state = {
-            ...defaultState(),
-            ...parsed
-          };
-          projectNameInput.value = state.projectName || '';
-          editorNameInput.value = state.editorName || '';
-          persist();
-          renderAll();
-          showToast('세이브파일을 불러왔습니다');
-        } catch (e) {
-          alert('세이브파일을 읽지 못했습니다.');
-        } finally {
-          importFileInput.value = '';
+      try {
+        const text = await file.text();
+        const parsed = JSON.parse(String(text).trim());
+
+        if (!parsed || typeof parsed !== 'object') {
+          throw new Error('잘못된 JSON 형식입니다.');
         }
-      };
-      reader.readAsText(file, 'utf-8');
+
+        if (parsed.syllablesHash && parsed.syllablesHash !== syllablesHash) {
+          throw new Error('이 파일은 현재 음절 리스트와 맞지 않습니다.');
+        }
+
+        const nextState = {
+          ...defaultState(),
+          ...parsed
+        };
+
+        if (!Array.isArray(nextState.saved)) nextState.saved = [];
+        if (!Array.isArray(nextState.seenIds)) nextState.seenIds = [];
+        if (!Array.isArray(nextState.excludedSyllables)) nextState.excludedSyllables = [];
+        if (typeof nextState.projectName !== 'string') nextState.projectName = '강씨 이름 1차';
+        if (typeof nextState.editorName !== 'string') nextState.editorName = '';
+        if (typeof nextState.lastEditedBy !== 'string') nextState.lastEditedBy = '';
+        if (typeof nextState.fixedMiddle === 'undefined') nextState.fixedMiddle = null;
+        if (typeof nextState.fixedEnd === 'undefined') nextState.fixedEnd = null;
+
+        state = nextState;
+
+        projectNameInput.value = state.projectName || '';
+        editorNameInput.value = state.editorName || '';
+
+        persist();
+        renderAll();
+        closeModal();
+        closeSavedSheet();
+
+        showToast('세이브파일을 불러왔습니다');
+      } catch (err) {
+        console.error(err);
+        alert('불러오기 실패: ' + (err && err.message ? err.message : 'JSON 파일을 읽지 못했습니다.'));
+      } finally {
+        event.target.value = '';
+      }
     }
 
     function loadState() {
@@ -1161,6 +1360,8 @@
     document.addEventListener('keydown', e => {
       if (!currentCard) return;
       if (modalOverlay.classList.contains('show')) return;
+      if (savedSheet.classList.contains('show')) return;
+
       if (e.key === 'ArrowLeft') swipeAction('left', currentCard);
       if (e.key === 'ArrowRight') swipeAction('right', currentCard);
       if (e.key === 'ArrowUp') promptExclude(currentCard.data);
