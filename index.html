@@ -11,6 +11,10 @@
       --text: #111827;
       --muted: #6b7280;
       --line: #e5e7eb;
+      --save: #059669;
+      --discard: #ef4444;
+      --exclude: #ea580c;
+      --fix: #2563eb;
       --shadow: 0 10px 30px rgba(15, 23, 42, 0.12);
       --radius: 24px;
     }
@@ -30,7 +34,9 @@
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans KR", Arial, sans-serif;
     }
 
-    body { position: relative; }
+    body {
+      position: relative;
+    }
 
     .drawer {
       position: fixed;
@@ -40,7 +46,10 @@
       transition: transform .24s ease;
       pointer-events: none;
     }
-    .drawer.open { transform: translateY(0); }
+
+    .drawer.open {
+      transform: translateY(0);
+    }
 
     .drawer-panel {
       background: rgba(255,255,255,.98);
@@ -53,7 +62,7 @@
     }
 
     .drawer-body {
-      max-height: min(62vh, 460px);
+      max-height: min(66vh, 520px);
       overflow-y: auto;
       padding: 14px 14px 12px;
     }
@@ -80,8 +89,13 @@
       cursor: pointer;
     }
 
-    .arrow { transition: transform .2s ease; }
-    .drawer.open .arrow { transform: rotate(180deg); }
+    .arrow {
+      transition: transform .2s ease;
+    }
+
+    .drawer.open .arrow {
+      transform: rotate(180deg);
+    }
 
     .title-row {
       display: flex;
@@ -122,8 +136,21 @@
       background: #eef2ff;
       cursor: pointer;
     }
-    .pill.red { background: #fee2e2; color: #991b1b; }
-    .pill.gray { background: #f3f4f6; color: #374151; }
+
+    .pill.red {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+
+    .pill.gray {
+      background: #f3f4f6;
+      color: #374151;
+    }
+
+    .pill.green {
+      background: #ecfdf5;
+      color: #047857;
+    }
 
     .meta-grid {
       display: grid;
@@ -168,7 +195,10 @@
       color: #374151;
     }
 
-    .chip-section { margin-top: 10px; }
+    .chip-section {
+      margin-top: 10px;
+    }
+
     .chip-title {
       font-size: 12px;
       font-weight: 900;
@@ -195,8 +225,19 @@
       background: #fff;
       color: #374151;
     }
-    .chip.exclude { background: #fff7ed; color: #9a3412; border-color: #fed7aa; }
-    .chip.fixed { background: #eff6ff; color: #1d4ed8; border-color: #bfdbfe; }
+
+    .chip.exclude {
+      background: #fff7ed;
+      color: #9a3412;
+      border-color: #fed7aa;
+    }
+
+    .chip.fixed {
+      background: #eff6ff;
+      color: #1d4ed8;
+      border-color: #bfdbfe;
+    }
+
     .chip button {
       border: none;
       background: transparent;
@@ -244,7 +285,10 @@
       padding: 16px;
       transition: transform .22s ease, opacity .22s ease;
     }
-    .card.dragging { transition: none; }
+
+    .card.dragging {
+      transition: none;
+    }
 
     .name {
       font-size: clamp(54px, 14vw, 90px);
@@ -306,10 +350,26 @@
       background: #f3f4f6;
       cursor: pointer;
     }
-    .footer-btn.save { background: #ecfdf5; color: #047857; }
-    .footer-btn.discard { background: #fef2f2; color: #b91c1c; }
-    .footer-btn.exclude { background: #fff7ed; color: #c2410c; }
-    .footer-btn.fix { background: #eff6ff; color: #1d4ed8; }
+
+    .footer-btn.save {
+      background: #ecfdf5;
+      color: #047857;
+    }
+
+    .footer-btn.discard {
+      background: #fef2f2;
+      color: #b91c1c;
+    }
+
+    .footer-btn.exclude {
+      background: #fff7ed;
+      color: #c2410c;
+    }
+
+    .footer-btn.fix {
+      background: #eff6ff;
+      color: #1d4ed8;
+    }
 
     .overlay {
       position: fixed;
@@ -322,7 +382,10 @@
       justify-content: center;
       padding: 16px;
     }
-    .overlay.show { display: flex; }
+
+    .overlay.show {
+      display: flex;
+    }
 
     .modal {
       width: min(440px, 100%);
@@ -331,24 +394,31 @@
       box-shadow: 0 20px 46px rgba(0,0,0,.18);
       overflow: hidden;
     }
-    .modal-head { padding: 18px 18px 10px; }
+
+    .modal-head {
+      padding: 18px 18px 10px;
+    }
+
     .modal-title {
       font-size: 18px;
       font-weight: 900;
       margin-bottom: 6px;
       letter-spacing: -0.03em;
     }
+
     .modal-desc {
       font-size: 13px;
       color: var(--muted);
       line-height: 1.55;
       font-weight: 700;
     }
+
     .modal-body {
       padding: 0 18px 18px;
       display: grid;
       gap: 8px;
     }
+
     .choice-btn {
       border: none;
       width: 100%;
@@ -362,9 +432,29 @@
       border: 1px solid var(--line);
       cursor: pointer;
     }
-    .choice-btn.soft-red { background: #fff7ed; border-color: #fed7aa; color: #9a3412; }
-    .choice-btn.soft-blue { background: #eff6ff; border-color: #bfdbfe; color: #1d4ed8; }
-    .choice-btn.cancel { background: #f3f4f6; color: #374151; }
+
+    .choice-btn.soft-red {
+      background: #fff7ed;
+      border-color: #fed7aa;
+      color: #9a3412;
+    }
+
+    .choice-btn.soft-blue {
+      background: #eff6ff;
+      border-color: #bfdbfe;
+      color: #1d4ed8;
+    }
+
+    .choice-btn.soft-green {
+      background: #ecfdf5;
+      border-color: #a7f3d0;
+      color: #047857;
+    }
+
+    .choice-btn.cancel {
+      background: #f3f4f6;
+      color: #374151;
+    }
 
     .saved-mask {
       position: fixed;
@@ -374,7 +464,10 @@
       background: rgba(17,24,39,.28);
       backdrop-filter: blur(4px);
     }
-    .saved-mask.show { display: block; }
+
+    .saved-mask.show {
+      display: block;
+    }
 
     .saved-sheet {
       position: fixed;
@@ -391,7 +484,10 @@
       flex-direction: column;
       will-change: transform;
     }
-    .saved-sheet.show { transform: translateY(0); }
+
+    .saved-sheet.show {
+      transform: translateY(0);
+    }
 
     .saved-head {
       padding: 16px;
@@ -403,30 +499,81 @@
       background: #fff;
       border-top-left-radius: 24px;
       border-top-right-radius: 24px;
+      flex-wrap: wrap;
     }
-    .saved-title { font-size: 17px; font-weight: 900; }
-    .saved-tools { display: flex; gap: 8px; flex-wrap: wrap; }
+
+    .saved-title {
+      font-size: 17px;
+      font-weight: 900;
+    }
+
+    .saved-tools {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
     .saved-body {
       overflow: auto;
       padding: 14px 16px 24px;
       min-height: 180px;
       background: #fff;
     }
+
     .saved-grid {
       display: grid;
       grid-template-columns: repeat(2, minmax(0,1fr));
       gap: 8px;
     }
+
     .saved-item {
       background: #f8fafc;
       border: 1px solid var(--line);
       border-radius: 16px;
       padding: 12px;
+      display: grid;
+      gap: 8px;
+      align-content: start;
+    }
+
+    .saved-item-name {
       font-size: 18px;
       font-weight: 900;
       text-align: center;
       letter-spacing: -0.03em;
     }
+
+    .saved-item-meta {
+      font-size: 11px;
+      color: var(--muted);
+      text-align: center;
+      font-weight: 700;
+      line-height: 1.5;
+    }
+
+    .saved-item-tools {
+      display: flex;
+      justify-content: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .tiny-btn {
+      border: none;
+      border-radius: 999px;
+      padding: 7px 10px;
+      font-size: 11px;
+      font-weight: 900;
+      cursor: pointer;
+      background: #f3f4f6;
+      color: #374151;
+    }
+
+    .tiny-btn.red {
+      background: #fef2f2;
+      color: #b91c1c;
+    }
+
     .empty {
       color: var(--muted);
       font-size: 14px;
@@ -455,16 +602,28 @@
       text-align: center;
       line-height: 1.4;
     }
+
     .toast.show {
       opacity: 1;
       transform: translateX(-50%) translateY(0);
     }
 
     @media (max-width: 480px) {
-      .meta-grid { grid-template-columns: 1fr; }
-      .saved-grid { grid-template-columns: 1fr 1fr; }
-      .card { height: min(68vh, 520px); }
-      .footer-bar { grid-template-columns: repeat(2, 1fr); }
+      .meta-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .saved-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .card {
+        height: min(68vh, 520px);
+      }
+
+      .footer-bar {
+        grid-template-columns: repeat(2, 1fr);
+      }
     }
   </style>
 </head>
@@ -478,8 +637,10 @@
             <div class="subtitle">왼쪽 보관 · 오른쪽 버림 · 위 배제 · 아래 위치 고정</div>
           </div>
           <div class="actions">
+            <button class="pill green" id="exportSavedTxtBtnTop">보관함 TXT</button>
             <button class="pill" id="exportBtn">세이브 내보내기</button>
             <button class="pill gray" id="importBtn">세이브 불러오기</button>
+            <button class="pill gray" id="restoreBackupBtn">최근 백업 복원</button>
             <button class="pill red" id="resetBtn">초기화</button>
           </div>
         </div>
@@ -498,7 +659,7 @@
         <div class="stats" id="stats"></div>
 
         <div class="chip-section">
-          <div class="chip-title">배제 음절</div>
+          <div class="chip-title">배제 규칙</div>
           <div class="chips" id="excludeChips"></div>
         </div>
 
@@ -543,8 +704,8 @@
     <div class="saved-head">
       <div class="saved-title">보관함</div>
       <div class="saved-tools">
+        <button class="pill green" id="exportSavedTxtBtn">TXT 저장</button>
         <button class="pill" id="copySavedBtn">목록 복사</button>
-        <button class="pill gray" id="exportSavedTxtBtn">TXT 저장</button>
         <button class="pill gray" id="closeSavedBtn">닫기</button>
       </div>
     </div>
@@ -565,26 +726,27 @@
       '건', '결', '경', '공', '관', '교', '권', '규', '균', '나',
       '누', '다', '단', '대', '도', '라', '락', '람', '랑', '량',
       '령', '례', '로', '론', '료', '류', '률', '리', '린', '마',
-      '무', '민', '바', '배', '별', '보', '본', '비', '빈',
-      '사', '산', '상', '새', '석', '선', '설', '성', '세', '소',
-      '손', '솔', '송', '수', '승', '시', '식', '신', '아', '안',
-      '어', '여', '연', '열', '영', '예', '오', '온', '올', '우',
-      '운', '울', '원', '유', '윤', '율', '은', '의', '이', '익',
-      '인', '자', '작', '장', '재', '적', '전', '정', '제', '조',
-      '종', '주', '준', '중', '지', '직', '진', '차', '찬',
-      '채', '천', '철', '초', '태', '하', '한', '해',
-      '헌', '혁', '현', '혜', '호', '화', '환', '회', '효', '훈',
-      '휘', '희'
+      '무', '민', '바', '배', '별', '보', '본', '비', '빈', '사',
+      '산', '상', '새', '석', '선', '설', '성', '세', '소', '손',
+      '솔', '송', '수', '승', '시', '식', '신', '아', '안', '어',
+      '여', '연', '열', '영', '예', '오', '온', '올', '우', '운',
+      '울', '원', '유', '윤', '율', '은', '의', '이', '익', '인',
+      '자', '작', '장', '재', '적', '전', '정', '제', '조', '종',
+      '주', '준', '중', '지', '직', '진', '차', '찬', '채', '천',
+      '철', '초', '태', '하', '한', '해', '헌', '혁', '현', '혜',
+      '호', '화', '환', '회', '효', '훈', '휘', '희'
     ];
 
-    const STORAGE_KEY = 'kang_name_relay_v8';
-    const VERSION = 8;
+    const CORE_KEY = 'kang_name_relay_v9_core';
+    const SAVED_KEY = 'kang_name_relay_v9_saved';
+    const BACKUP_KEY = 'kang_name_relay_v9_backup';
+    const VERSION = 9;
     const syllablesHash = simpleHash(syllables.join('|'));
 
     const allNames = [];
     for (const first of syllables) {
       for (const second of syllables) {
-        if (first === second) continue;
+        if (first === second) continue; // 강영영 같은 중복 음절 제거
         allNames.push({
           id: `${first}|${second}`,
           first,
@@ -594,23 +756,29 @@
       }
     }
 
-    const defaultState = () => ({
+    const defaultCoreState = () => ({
       version: VERSION,
       syllablesHash,
       projectName: '강씨 이름 1차',
       editorName: '',
       lastEditedBy: '',
       lastSavedAt: '',
-      saved: [],
       seenIds: [],
-      excludedSyllables: [],
+      excludedAnywhere: [],
       excludedMiddle: [],
       excludedEnd: [],
       fixedMiddle: null,
       fixedEnd: null
     });
 
-    let state = loadState();
+    const defaultSavedState = () => ({
+      version: VERSION,
+      syllablesHash,
+      saved: []
+    });
+
+    let coreState = loadCoreState();
+    let savedState = loadSavedState();
     let currentCard = null;
     let toastTimer = null;
 
@@ -624,6 +792,7 @@
     const editorNameInput = document.getElementById('editorName');
     const exportBtn = document.getElementById('exportBtn');
     const importBtn = document.getElementById('importBtn');
+    const restoreBackupBtn = document.getElementById('restoreBackupBtn');
     const resetBtn = document.getElementById('resetBtn');
     const importFileInput = document.getElementById('importFileInput');
     const modalOverlay = document.getElementById('modalOverlay');
@@ -636,24 +805,25 @@
     const closeSavedBtn = document.getElementById('closeSavedBtn');
     const copySavedBtn = document.getElementById('copySavedBtn');
     const exportSavedTxtBtn = document.getElementById('exportSavedTxtBtn');
+    const exportSavedTxtBtnTop = document.getElementById('exportSavedTxtBtnTop');
     const toastEl = document.getElementById('toast');
 
-    projectNameInput.value = state.projectName || '';
-    editorNameInput.value = state.editorName || '';
+    projectNameInput.value = coreState.projectName || '';
+    editorNameInput.value = coreState.editorName || '';
 
     toggleDrawerBtn.addEventListener('click', () => {
       drawer.classList.toggle('open');
     });
 
     projectNameInput.addEventListener('input', () => {
-      state.projectName = projectNameInput.value.trim();
-      persist();
+      coreState.projectName = projectNameInput.value.trim();
+      persistAll();
       renderStats();
     });
 
     editorNameInput.addEventListener('input', () => {
-      state.editorName = editorNameInput.value.trim();
-      persist();
+      coreState.editorName = editorNameInput.value.trim();
+      persistAll();
       renderStats();
     });
 
@@ -664,19 +834,25 @@
     });
     importFileInput.addEventListener('change', handleImportFile);
 
+    exportSavedTxtBtn.addEventListener('click', exportSavedTxt);
+    exportSavedTxtBtnTop.addEventListener('click', exportSavedTxt);
+
+    restoreBackupBtn.addEventListener('click', restoreBackup);
+
     resetBtn.addEventListener('click', () => {
       openChoiceModal({
         title: '전체 상태 초기화',
-        desc: '현재 브라우저에 저장된 진행 상태를 모두 지웁니다. 정말 초기화할까요?',
+        desc: '현재 브라우저의 진행 상태와 보관함을 모두 지웁니다. 정말 초기화할까요?',
         choices: [
           {
             label: '초기화하기',
             className: 'soft-red',
             onClick: () => {
-              state = defaultState();
-              projectNameInput.value = state.projectName;
+              coreState = defaultCoreState();
+              savedState = defaultSavedState();
+              projectNameInput.value = coreState.projectName;
               editorNameInput.value = '';
-              persist();
+              persistAll();
               closeModal();
               renderAll();
               showToast('초기화했습니다');
@@ -690,12 +866,15 @@
     document.getElementById('saveActionBtn').addEventListener('click', () => {
       if (currentCard) swipeAction('left', currentCard);
     });
+
     document.getElementById('discardActionBtn').addEventListener('click', () => {
       if (currentCard) swipeAction('right', currentCard);
     });
+
     document.getElementById('excludeActionBtn').addEventListener('click', () => {
       if (currentCard) promptExclude(currentCard.data);
     });
+
     document.getElementById('fixActionBtn').addEventListener('click', () => {
       if (currentCard) promptFixStep1(currentCard.data);
     });
@@ -704,7 +883,7 @@
     closeSavedBtn.addEventListener('click', closeSavedSheet);
 
     copySavedBtn.addEventListener('click', async () => {
-      const text = state.saved.map(x => x.full).join('\n');
+      const text = savedState.saved.map(x => x.full).join('\n');
       if (!text) {
         showToast('보관함이 비어 있습니다');
         return;
@@ -717,10 +896,8 @@
       }
     });
 
-    exportSavedTxtBtn.addEventListener('click', exportSavedTxt);
-
     function renderAll() {
-      pruneState();
+      sanitizeStates();
       renderStats();
       renderChips();
       renderSavedSheet();
@@ -729,12 +906,13 @@
 
     function renderStats() {
       const total = allNames.length;
-      const savedCount = state.saved.length;
-      const seenCount = state.seenIds.length;
+      const savedCount = savedState.saved.length;
+      const seenCount = coreState.seenIds.length;
       const candidateCount = getFilteredPool().length;
       const remainingCount = getRemainingPool().length;
-      const lastSaved = state.lastSavedAt ? new Date(state.lastSavedAt).toLocaleString('ko-KR') : '없음';
-      const editor = state.lastEditedBy || '-';
+      const lastSaved = coreState.lastSavedAt ? new Date(coreState.lastSavedAt).toLocaleString('ko-KR') : '없음';
+      const editor = coreState.lastEditedBy || '-';
+      const backupExists = hasBackup();
 
       statsEl.innerHTML = [
         `전체 후보: <b>${total.toLocaleString()}</b>개`,
@@ -743,7 +921,8 @@
         `보관함: <b>${savedCount.toLocaleString()}</b>개`,
         `검토 완료: <b>${seenCount.toLocaleString()}</b>개`,
         `최근 저장: <b>${lastSaved}</b>`,
-        `최근 작업자: <b>${editor}</b>`
+        `최근 작업자: <b>${editor}</b>`,
+        `로컬 백업: <b>${backupExists ? '있음' : '없음'}</b>`
       ].join('<br>');
     }
 
@@ -751,10 +930,11 @@
       excludeChipsEl.innerHTML = '';
       fixedChipsEl.innerHTML = '';
 
-      const excludeItems = [];
-      state.excludedSyllables.forEach(char => excludeItems.push({ type: 'all', char, label: `전체 배제: ${char}` }));
-      state.excludedMiddle.forEach(char => excludeItems.push({ type: 'middle', char, label: `가운데 배제: ${char}` }));
-      state.excludedEnd.forEach(char => excludeItems.push({ type: 'end', char, label: `끝 배제: ${char}` }));
+      const excludeItems = [
+        ...coreState.excludedAnywhere.map(char => ({ type: 'anywhere', label: `전체 배제: ${char}`, char })),
+        ...coreState.excludedMiddle.map(char => ({ type: 'middle', label: `가운데 배제: ${char}`, char })),
+        ...coreState.excludedEnd.map(char => ({ type: 'end', label: `끝 배제: ${char}`, char }))
+      ];
 
       if (excludeItems.length === 0) {
         excludeChipsEl.innerHTML = '<span class="chip">없음</span>';
@@ -764,10 +944,10 @@
           chip.className = 'chip exclude';
           chip.innerHTML = `${item.label} <button aria-label="remove">✕</button>`;
           chip.querySelector('button').addEventListener('click', () => {
-            if (item.type === 'all') state.excludedSyllables = state.excludedSyllables.filter(x => x !== item.char);
-            if (item.type === 'middle') state.excludedMiddle = state.excludedMiddle.filter(x => x !== item.char);
-            if (item.type === 'end') state.excludedEnd = state.excludedEnd.filter(x => x !== item.char);
-            persist();
+            if (item.type === 'anywhere') coreState.excludedAnywhere = coreState.excludedAnywhere.filter(x => x !== item.char);
+            if (item.type === 'middle') coreState.excludedMiddle = coreState.excludedMiddle.filter(x => x !== item.char);
+            if (item.type === 'end') coreState.excludedEnd = coreState.excludedEnd.filter(x => x !== item.char);
+            persistAll();
             renderAll();
             showToast(`'${item.char}' 배제를 해제했습니다`);
           });
@@ -776,8 +956,8 @@
       }
 
       const fixedItems = [];
-      if (state.fixedMiddle) fixedItems.push({ key: 'middle', label: `가운데 고정: ${state.fixedMiddle}` });
-      if (state.fixedEnd) fixedItems.push({ key: 'end', label: `끝 고정: ${state.fixedEnd}` });
+      if (coreState.fixedMiddle) fixedItems.push({ key: 'middle', label: `가운데 고정: ${coreState.fixedMiddle}` });
+      if (coreState.fixedEnd) fixedItems.push({ key: 'end', label: `끝 고정: ${coreState.fixedEnd}` });
 
       if (fixedItems.length === 0) {
         fixedChipsEl.innerHTML = '<span class="chip">없음</span>';
@@ -787,9 +967,9 @@
           chip.className = 'chip fixed';
           chip.innerHTML = `${item.label} <button aria-label="remove">✕</button>`;
           chip.querySelector('button').addEventListener('click', () => {
-            if (item.key === 'middle') state.fixedMiddle = null;
-            if (item.key === 'end') state.fixedEnd = null;
-            persist();
+            if (item.key === 'middle') coreState.fixedMiddle = null;
+            if (item.key === 'end') coreState.fixedEnd = null;
+            persistAll();
             renderAll();
             showToast('위치 고정을 해제했습니다');
           });
@@ -799,18 +979,30 @@
     }
 
     function renderSavedSheet() {
-      if (state.saved.length === 0) {
+      if (savedState.saved.length === 0) {
         savedBody.innerHTML = '<div class="empty">아직 보관한 이름이 없습니다.<br>카드를 왼쪽으로 스와이프하면 보관됩니다.</div>';
         return;
       }
+
       const grid = document.createElement('div');
       grid.className = 'saved-grid';
-      [...state.saved].reverse().forEach(item => {
+
+      [...savedState.saved].slice().reverse().forEach(item => {
         const div = document.createElement('div');
         div.className = 'saved-item';
-        div.textContent = item.full;
+        div.innerHTML = `
+          <div class="saved-item-name">${item.full}</div>
+          <div class="saved-item-meta">보관 시각: ${item.savedAt ? new Date(item.savedAt).toLocaleString('ko-KR') : '-'}</div>
+          <div class="saved-item-tools">
+            <button class="tiny-btn red">보관 해제</button>
+          </div>
+        `;
+        div.querySelector('button').addEventListener('click', () => {
+          removeSaved(item.id);
+        });
         grid.appendChild(div);
       });
+
       savedBody.innerHTML = '';
       savedBody.appendChild(grid);
     }
@@ -866,6 +1058,7 @@
       `;
       deck.appendChild(card);
       card.querySelector('#savedOpenBtn').addEventListener('click', openSavedSheet);
+
       currentCard = { el: card, data: next };
       bindCardSwipe(card, next);
     }
@@ -902,6 +1095,7 @@
         if (!dragging) return;
         dragging = false;
         card.classList.remove('dragging');
+
         const absX = Math.abs(dx);
         const absY = Math.abs(dy);
         const threshold = 78;
@@ -910,8 +1104,11 @@
           swipeAction(dx < 0 ? 'left' : 'right', { el: card, data });
         } else if (absY > threshold && absY > absX) {
           card.style.transform = '';
-          if (dy < 0) promptExclude(data);
-          else promptFixStep1(data);
+          if (dy < 0) {
+            promptExclude(data);
+          } else {
+            promptFixStep1(data);
+          }
         } else {
           card.style.transform = '';
         }
@@ -919,7 +1116,9 @@
 
       card.addEventListener('pointerup', endDrag);
       card.addEventListener('pointercancel', endDrag);
-      card.addEventListener('lostpointercapture', () => { if (dragging) endDrag(); });
+      card.addEventListener('lostpointercapture', () => {
+        if (dragging) endDrag();
+      });
     }
 
     function swipeAction(direction, payload) {
@@ -949,23 +1148,23 @@
         desc: '선택한 음절이 들어간 이름은 앞으로 모두 제외됩니다.',
         choices: [
           {
-            label: `'${data.first}' 배제`,
+            label: `'${data.first}' 전체 배제`,
             className: 'soft-red',
             onClick: () => {
-              addExclude(data.first);
+              addExcludeAnywhere(data.first);
               closeModal();
               renderAll();
-              showToast(`'${data.first}'를 배제했습니다`);
+              showToast(`'${data.first}'를 전체 배제했습니다`);
             }
           },
           {
-            label: `'${data.second}' 배제`,
+            label: `'${data.second}' 전체 배제`,
             className: 'soft-red',
             onClick: () => {
-              addExclude(data.second);
+              addExcludeAnywhere(data.second);
               closeModal();
               renderAll();
-              showToast(`'${data.second}'를 배제했습니다`);
+              showToast(`'${data.second}'를 전체 배제했습니다`);
             }
           },
           { label: '취소', className: 'cancel', onClick: closeModal }
@@ -978,8 +1177,16 @@
         title: '어떤 음절을 고정할까요?',
         desc: '고정하면 그 음절이 선택한 위치에 있는 카드들만 계속 나옵니다.',
         choices: [
-          { label: `'${data.first}' 고정`, className: 'soft-blue', onClick: () => promptFixStep2(data.first) },
-          { label: `'${data.second}' 고정`, className: 'soft-blue', onClick: () => promptFixStep2(data.second) },
+          {
+            label: `'${data.first}' 고정`,
+            className: 'soft-blue',
+            onClick: () => promptFixStep2(data.first)
+          },
+          {
+            label: `'${data.second}' 고정`,
+            className: 'soft-blue',
+            onClick: () => promptFixStep2(data.second)
+          },
           { label: '취소', className: 'cancel', onClick: closeModal }
         ]
       });
@@ -993,62 +1200,67 @@
           {
             label: `가운데에 '${char}' 고정`,
             className: 'soft-blue',
-            onClick: () => promptFixOtherSide(char, 'middle')
+            onClick: () => promptFixOppositeQuestion(char, 'middle')
           },
           {
             label: `끝에 '${char}' 고정`,
             className: 'soft-blue',
-            onClick: () => promptFixOtherSide(char, 'end')
+            onClick: () => promptFixOppositeQuestion(char, 'end')
           },
           { label: '취소', className: 'cancel', onClick: closeModal }
         ]
       });
     }
 
-    function promptFixOtherSide(char, position) {
+    function promptFixOppositeQuestion(char, position) {
       const isMiddle = position === 'middle';
-      const question = isMiddle
-        ? `'${char}'을(를) 가운데로 고정했습니다. 끝에 '${char}'가 오는 경우도 다 없앨까요?`
-        : `'${char}'을(를) 끝으로 고정했습니다. 가운데에 '${char}'가 오는 경우도 다 없앨까요?`;
+      const title = isMiddle ? `가운데 '${char}' 고정` : `끝 '${char}' 고정`;
+      const desc = isMiddle
+        ? `이제 '강${char}□' 카드들만 나옵니다. 추가로 '강□${char}' 형태도 모두 없앨까요?`
+        : `이제 '강□${char}' 카드들만 나옵니다. 추가로 '강${char}□' 형태도 모두 없앨까요?`;
 
       openChoiceModal({
-        title: '반대 위치도 함께 정리할까요?',
-        desc: question,
+        title,
+        desc,
         choices: [
           {
-            label: '네, 그것도 빼줘',
-            className: 'soft-blue',
+            label: '응, 반대 위치도 없애기',
+            className: 'soft-red',
             onClick: () => {
-              applyFix(char, position, true);
+              applyFixedPosition(char, position, true);
+              closeModal();
+              renderAll();
+              showToast(`${isMiddle ? '가운데' : '끝'} '${char}' 고정 + 반대 위치 배제`);
             }
           },
           {
-            label: '아니요, 그대로 둘래요',
-            className: 'cancel',
+            label: '아니, 고정만 하기',
+            className: 'soft-green',
             onClick: () => {
-              applyFix(char, position, false);
+              applyFixedPosition(char, position, false);
+              closeModal();
+              renderAll();
+              showToast(`${isMiddle ? '가운데' : '끝'} '${char}' 고정`);
             }
-          }
+          },
+          { label: '취소', className: 'cancel', onClick: closeModal }
         ]
       });
     }
 
-    function applyFix(char, position, excludeOpposite) {
+    function applyFixedPosition(char, position, excludeOpposite) {
       if (position === 'middle') {
-        state.fixedMiddle = char;
-        if (excludeOpposite && !state.excludedEnd.includes(char)) state.excludedEnd.push(char);
+        coreState.fixedMiddle = char;
+        if (excludeOpposite && !coreState.excludedEnd.includes(char)) {
+          coreState.excludedEnd.push(char);
+        }
       } else {
-        state.fixedEnd = char;
-        if (excludeOpposite && !state.excludedMiddle.includes(char)) state.excludedMiddle.push(char);
+        coreState.fixedEnd = char;
+        if (excludeOpposite && !coreState.excludedMiddle.includes(char)) {
+          coreState.excludedMiddle.push(char);
+        }
       }
-      persist();
-      closeModal();
-      renderAll();
-      if (excludeOpposite) {
-        showToast(`'${char}' 고정 + 반대 위치도 배제했습니다`);
-      } else {
-        showToast(`'${char}' 위치 고정`);
-      }
+      persistAll();
     }
 
     function openChoiceModal({ title, desc, choices }) {
@@ -1078,7 +1290,7 @@
     }
 
     function getRemainingPool() {
-      const seen = new Set(state.seenIds);
+      const seen = new Set(coreState.seenIds);
       return getFilteredPool().filter(item => !seen.has(item.id));
     }
 
@@ -1089,65 +1301,120 @@
     }
 
     function passesRules(item) {
-      if (item.first === item.second) return false;
-      if (state.excludedSyllables.includes(item.first) || state.excludedSyllables.includes(item.second)) return false;
-      if (state.excludedMiddle.includes(item.first)) return false;
-      if (state.excludedEnd.includes(item.second)) return false;
-      if (state.fixedMiddle && item.first !== state.fixedMiddle) return false;
-      if (state.fixedEnd && item.second !== state.fixedEnd) return false;
+      if (coreState.excludedAnywhere.includes(item.first) || coreState.excludedAnywhere.includes(item.second)) return false;
+      if (coreState.excludedMiddle.includes(item.first)) return false;
+      if (coreState.excludedEnd.includes(item.second)) return false;
+      if (coreState.fixedMiddle && item.first !== coreState.fixedMiddle) return false;
+      if (coreState.fixedEnd && item.second !== coreState.fixedEnd) return false;
       return true;
     }
 
-    function addExclude(char) {
-      if (!state.excludedSyllables.includes(char)) {
-        state.excludedSyllables.push(char);
-        persist();
+    function addExcludeAnywhere(char) {
+      if (!coreState.excludedAnywhere.includes(char)) {
+        coreState.excludedAnywhere.push(char);
+        persistAll();
       }
     }
 
     function addSaved(item) {
-      if (!state.saved.some(x => x.id === item.id)) {
-        state.saved.push({ id: item.id, full: item.full, first: item.first, second: item.second });
-        persist();
+      if (!savedState.saved.some(x => x.id === item.id)) {
+        savedState.saved.push({
+          id: item.id,
+          full: item.full,
+          first: item.first,
+          second: item.second,
+          savedAt: new Date().toISOString()
+        });
+        coreState.lastEditedBy = coreState.editorName || coreState.lastEditedBy || '';
+        coreState.lastSavedAt = new Date().toISOString();
+        persistAll();
+      }
+    }
+
+    function removeSaved(id) {
+      const before = savedState.saved.length;
+      savedState.saved = savedState.saved.filter(item => item.id !== id);
+      if (savedState.saved.length !== before) {
+        coreState.lastEditedBy = coreState.editorName || coreState.lastEditedBy || '';
+        coreState.lastSavedAt = new Date().toISOString();
+        persistAll();
+        renderAll();
+        showToast('보관함에서 삭제했습니다');
       }
     }
 
     function markSeen(id) {
-      if (!state.seenIds.includes(id)) state.seenIds.push(id);
-      state.lastEditedBy = state.editorName || state.lastEditedBy || '';
-      state.lastSavedAt = new Date().toISOString();
-      persist();
+      if (!coreState.seenIds.includes(id)) {
+        coreState.seenIds.push(id);
+      }
+      coreState.lastEditedBy = coreState.editorName || coreState.lastEditedBy || '';
+      coreState.lastSavedAt = new Date().toISOString();
+      persistAll();
     }
 
-    function pruneState() {
-      const validByRules = new Set(getFilteredPool().map(x => x.id));
-      state.saved = state.saved.filter(item => validByRules.has(item.id));
+    function sanitizeStates() {
       const validAll = new Set(allNames.map(x => x.id));
-      state.seenIds = state.seenIds.filter(id => validAll.has(id));
+      coreState.seenIds = Array.isArray(coreState.seenIds) ? coreState.seenIds.filter(id => validAll.has(id)) : [];
+      coreState.excludedAnywhere = uniqueArray(coreState.excludedAnywhere).filter(x => syllables.includes(x));
+      coreState.excludedMiddle = uniqueArray(coreState.excludedMiddle).filter(x => syllables.includes(x));
+      coreState.excludedEnd = uniqueArray(coreState.excludedEnd).filter(x => syllables.includes(x));
+      if (coreState.fixedMiddle && !syllables.includes(coreState.fixedMiddle)) coreState.fixedMiddle = null;
+      if (coreState.fixedEnd && !syllables.includes(coreState.fixedEnd)) coreState.fixedEnd = null;
 
-      if (!state.projectName) state.projectName = '강씨 이름 1차';
-      if (typeof state.editorName !== 'string') state.editorName = '';
-      if (typeof state.lastEditedBy !== 'string') state.lastEditedBy = '';
-      if (!Array.isArray(state.excludedSyllables)) state.excludedSyllables = [];
-      if (!Array.isArray(state.excludedMiddle)) state.excludedMiddle = [];
-      if (!Array.isArray(state.excludedEnd)) state.excludedEnd = [];
-      if (!Array.isArray(state.saved)) state.saved = [];
-      if (!Array.isArray(state.seenIds)) state.seenIds = [];
-      persist();
+      if (!Array.isArray(savedState.saved)) savedState.saved = [];
+      savedState.saved = dedupeSaved(savedState.saved).filter(item => validAll.has(item.id));
+
+      if (!coreState.projectName) coreState.projectName = '강씨 이름 1차';
+      if (typeof coreState.editorName !== 'string') coreState.editorName = '';
+      if (typeof coreState.lastEditedBy !== 'string') coreState.lastEditedBy = '';
+      persistAll();
+    }
+
+    function dedupeSaved(items) {
+      const map = new Map();
+      for (const item of items) {
+        if (!item || !item.id) continue;
+        if (!map.has(item.id)) {
+          map.set(item.id, {
+            id: item.id,
+            full: item.full || restoreFullName(item.id),
+            first: item.first || item.id.split('|')[0],
+            second: item.second || item.id.split('|')[1],
+            savedAt: item.savedAt || ''
+          });
+        }
+      }
+      return Array.from(map.values());
+    }
+
+    function restoreFullName(id) {
+      const [first, second] = String(id).split('|');
+      return `강${first}${second}`;
+    }
+
+    function uniqueArray(arr) {
+      return Array.isArray(arr) ? Array.from(new Set(arr)) : [];
     }
 
     function exportSaveFile() {
-      state.projectName = projectNameInput.value.trim() || state.projectName || '강씨 이름 1차';
-      state.editorName = editorNameInput.value.trim();
-      state.lastEditedBy = state.editorName || state.lastEditedBy || '';
-      state.lastSavedAt = new Date().toISOString();
-      persist();
+      coreState.projectName = projectNameInput.value.trim() || coreState.projectName || '강씨 이름 1차';
+      coreState.editorName = editorNameInput.value.trim();
+      coreState.lastEditedBy = coreState.editorName || coreState.lastEditedBy || '';
+      coreState.lastSavedAt = new Date().toISOString();
+      persistAll();
 
-      const payload = { ...state, exportedAt: new Date().toISOString() };
+      const payload = {
+        version: VERSION,
+        syllablesHash,
+        exportedAt: new Date().toISOString(),
+        coreState,
+        savedState
+      };
+
       const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json;charset=utf-8' });
       const a = document.createElement('a');
-      const safeProject = (state.projectName || 'kang').replace(/[^\w가-힣-]+/g, '_');
-      const safeEditor = (state.editorName || 'user').replace(/[^\w가-힣-]+/g, '_');
+      const safeProject = (coreState.projectName || 'kang').replace(/[^\w가-힣-]+/g, '_');
+      const safeEditor = (coreState.editorName || 'user').replace(/[^\w가-힣-]+/g, '_');
       const stamp = new Date().toISOString().replace(/[:.]/g, '-');
       a.href = URL.createObjectURL(blob);
       a.download = `${safeProject}_${safeEditor}_${stamp}.json`;
@@ -1159,26 +1426,6 @@
       showToast('세이브파일을 내보냈습니다');
     }
 
-    function exportSavedTxt() {
-      const names = state.saved.map(x => x.full);
-      if (names.length === 0) {
-        showToast('보관함이 비어 있습니다');
-        return;
-      }
-      const text = names.join('\n');
-      const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
-      const a = document.createElement('a');
-      const safeProject = (state.projectName || 'kang').replace(/[^\w가-힣-]+/g, '_');
-      const stamp = new Date().toISOString().replace(/[:.]/g, '-');
-      a.href = URL.createObjectURL(blob);
-      a.download = `${safeProject}_saved_names_${stamp}.txt`;
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-      setTimeout(() => URL.revokeObjectURL(a.href), 500);
-      showToast('보관함 TXT를 저장했습니다');
-    }
-
     async function handleImportFile(event) {
       const file = event.target.files && event.target.files[0];
       if (!file) return;
@@ -1186,27 +1433,45 @@
       try {
         const text = await file.text();
         const parsed = JSON.parse(String(text).trim());
-        if (!parsed || typeof parsed !== 'object') throw new Error('잘못된 JSON 형식입니다.');
-        if (parsed.syllablesHash && parsed.syllablesHash !== syllablesHash) {
+
+        if (!parsed || typeof parsed !== 'object') {
+          throw new Error('잘못된 JSON 형식입니다.');
+        }
+
+        const importedHash = parsed.syllablesHash || parsed.coreState?.syllablesHash || parsed.savedState?.syllablesHash;
+        if (importedHash && importedHash !== syllablesHash) {
           throw new Error('이 파일은 현재 음절 리스트와 맞지 않습니다.');
         }
 
-        const nextState = { ...defaultState(), ...parsed };
-        if (!Array.isArray(nextState.saved)) nextState.saved = [];
-        if (!Array.isArray(nextState.seenIds)) nextState.seenIds = [];
-        if (!Array.isArray(nextState.excludedSyllables)) nextState.excludedSyllables = [];
-        if (!Array.isArray(nextState.excludedMiddle)) nextState.excludedMiddle = [];
-        if (!Array.isArray(nextState.excludedEnd)) nextState.excludedEnd = [];
-        if (typeof nextState.projectName !== 'string') nextState.projectName = '강씨 이름 1차';
-        if (typeof nextState.editorName !== 'string') nextState.editorName = '';
-        if (typeof nextState.lastEditedBy !== 'string') nextState.lastEditedBy = '';
-        if (typeof nextState.fixedMiddle === 'undefined') nextState.fixedMiddle = null;
-        if (typeof nextState.fixedEnd === 'undefined') nextState.fixedEnd = null;
+        if (parsed.coreState || parsed.savedState) {
+          coreState = { ...defaultCoreState(), ...(parsed.coreState || {}) };
+          savedState = { ...defaultSavedState(), ...(parsed.savedState || {}) };
+        } else {
+          // 구버전 세이브파일 호환
+          const legacy = { ...parsed };
+          coreState = {
+            ...defaultCoreState(),
+            projectName: legacy.projectName || legacy.coreState?.projectName || '강씨 이름 1차',
+            editorName: legacy.editorName || '',
+            lastEditedBy: legacy.lastEditedBy || '',
+            lastSavedAt: legacy.lastSavedAt || '',
+            seenIds: Array.isArray(legacy.seenIds) ? legacy.seenIds : [],
+            excludedAnywhere: Array.isArray(legacy.excludedSyllables) ? legacy.excludedSyllables : [],
+            excludedMiddle: Array.isArray(legacy.excludedMiddle) ? legacy.excludedMiddle : [],
+            excludedEnd: Array.isArray(legacy.excludedEnd) ? legacy.excludedEnd : [],
+            fixedMiddle: typeof legacy.fixedMiddle === 'undefined' ? null : legacy.fixedMiddle,
+            fixedEnd: typeof legacy.fixedEnd === 'undefined' ? null : legacy.fixedEnd
+          };
+          savedState = {
+            ...defaultSavedState(),
+            saved: Array.isArray(legacy.saved) ? legacy.saved : []
+          };
+        }
 
-        state = nextState;
-        projectNameInput.value = state.projectName || '';
-        editorNameInput.value = state.editorName || '';
-        persist();
+        sanitizeStates();
+        projectNameInput.value = coreState.projectName || '';
+        editorNameInput.value = coreState.editorName || '';
+        persistAll();
         renderAll();
         closeModal();
         closeSavedSheet();
@@ -1219,20 +1484,105 @@
       }
     }
 
-    function loadState() {
+    function exportSavedTxt() {
+      if (!savedState.saved.length) {
+        showToast('보관함이 비어 있습니다');
+        return;
+      }
+      const lines = savedState.saved.map(item => item.full);
+      const blob = new Blob([lines.join('\n')], { type: 'text/plain;charset=utf-8' });
+      const a = document.createElement('a');
+      const safeProject = (coreState.projectName || 'kang_saved').replace(/[^\w가-힣-]+/g, '_');
+      const stamp = new Date().toISOString().replace(/[:.]/g, '-');
+      a.href = URL.createObjectURL(blob);
+      a.download = `${safeProject}_saved_${stamp}.txt`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      setTimeout(() => URL.revokeObjectURL(a.href), 500);
+      showToast('보관함 TXT를 저장했습니다');
+    }
+
+    function restoreBackup() {
+      const raw = localStorage.getItem(BACKUP_KEY);
+      if (!raw) {
+        showToast('복원할 백업이 없습니다');
+        return;
+      }
+
+      openChoiceModal({
+        title: '최근 백업 복원',
+        desc: '현재 상태를 최근 로컬 백업으로 되돌립니다. 보관함 복구용입니다.',
+        choices: [
+          {
+            label: '백업으로 복원하기',
+            className: 'soft-green',
+            onClick: () => {
+              try {
+                const backup = JSON.parse(raw);
+                coreState = { ...defaultCoreState(), ...(backup.coreState || {}) };
+                savedState = { ...defaultSavedState(), ...(backup.savedState || {}) };
+                sanitizeStates();
+                projectNameInput.value = coreState.projectName || '';
+                editorNameInput.value = coreState.editorName || '';
+                persistAll();
+                closeModal();
+                renderAll();
+                showToast('최근 백업으로 복원했습니다');
+              } catch (e) {
+                closeModal();
+                showToast('백업 복원에 실패했습니다');
+              }
+            }
+          },
+          { label: '취소', className: 'cancel', onClick: closeModal }
+        ]
+      });
+    }
+
+    function hasBackup() {
+      return !!localStorage.getItem(BACKUP_KEY);
+    }
+
+    function loadCoreState() {
       try {
-        const raw = localStorage.getItem(STORAGE_KEY);
-        if (!raw) return defaultState();
+        const raw = localStorage.getItem(CORE_KEY);
+        if (!raw) return defaultCoreState();
         const parsed = JSON.parse(raw);
-        if (parsed.syllablesHash !== syllablesHash) return defaultState();
-        return { ...defaultState(), ...parsed };
+        if (parsed.syllablesHash && parsed.syllablesHash !== syllablesHash) return defaultCoreState();
+        return { ...defaultCoreState(), ...parsed };
       } catch (e) {
-        return defaultState();
+        return defaultCoreState();
       }
     }
 
-    function persist() {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    function loadSavedState() {
+      try {
+        const raw = localStorage.getItem(SAVED_KEY);
+        if (!raw) return defaultSavedState();
+        const parsed = JSON.parse(raw);
+        if (parsed.syllablesHash && parsed.syllablesHash !== syllablesHash) return defaultSavedState();
+        return { ...defaultSavedState(), ...parsed };
+      } catch (e) {
+        return defaultSavedState();
+      }
+    }
+
+    function persistAll() {
+      try {
+        localStorage.setItem(CORE_KEY, JSON.stringify(coreState));
+        localStorage.setItem(SAVED_KEY, JSON.stringify(savedState));
+        localStorage.setItem(BACKUP_KEY, JSON.stringify({
+          version: VERSION,
+          syllablesHash,
+          backedUpAt: new Date().toISOString(),
+          coreState,
+          savedState
+        }));
+      } catch (e) {
+        console.error(e);
+        showToast('저장 공간 문제로 일부 저장에 실패했을 수 있습니다');
+      }
     }
 
     function simpleHash(str) {
@@ -1255,12 +1605,14 @@
       if (!currentCard) return;
       if (modalOverlay.classList.contains('show')) return;
       if (savedSheet.classList.contains('show')) return;
+
       if (e.key === 'ArrowLeft') swipeAction('left', currentCard);
       if (e.key === 'ArrowRight') swipeAction('right', currentCard);
       if (e.key === 'ArrowUp') promptExclude(currentCard.data);
       if (e.key === 'ArrowDown') promptFixStep1(currentCard.data);
     });
 
+    sanitizeStates();
     renderAll();
   </script>
 </body>
