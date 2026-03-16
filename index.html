@@ -1,0 +1,1432 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>강씨 이름 후보 이어달리기</title>
+  <style>
+    :root {
+      --bg: #f5f7fb;
+      --panel: #ffffff;
+      --text: #1f2937;
+      --muted: #6b7280;
+      --line: #e5e7eb;
+      --save: #059669;
+      --discard: #ef4444;
+      --up: #ea580c;
+      --down: #2563eb;
+      --shadow: 0 10px 30px rgba(15, 23, 42, 0.10);
+      --radius: 22px;
+    }
+
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans KR", Arial, sans-serif;
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .header {
+      background: var(--panel);
+      box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+      padding: 14px 16px 10px;
+      z-index: 10;
+    }
+
+    .title-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .title {
+      font-size: 18px;
+      font-weight: 900;
+      letter-spacing: -0.03em;
+    }
+
+    .title small {
+      display: block;
+      font-size: 11px;
+      color: var(--muted);
+      font-weight: 700;
+      margin-top: 3px;
+    }
+
+    .top-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .pill-btn {
+      border: none;
+      background: #eef2ff;
+      color: #3730a3;
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .pill-btn.danger {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+
+    .meta-grid {
+      margin-top: 10px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .meta-card {
+      background: #f8fafc;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 10px 12px;
+    }
+
+    .meta-card label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    .meta-card input {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 10px 11px;
+      font-size: 14px;
+      font-weight: 700;
+      color: #111827;
+      background: #fff;
+    }
+
+    .meta-note {
+      margin-top: 8px;
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .stats {
+      margin-top: 10px;
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .chips-wrap {
+      margin-top: 10px;
+      display: grid;
+      gap: 8px;
+    }
+
+    .chip-row-title {
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+
+    .chips {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      min-height: 24px;
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      border: 1px solid var(--line);
+      background: #f8fafc;
+      color: #374151;
+      font-weight: 700;
+    }
+
+    .chip.exclude {
+      background: #fff7ed;
+      color: #9a3412;
+      border-color: #fed7aa;
+    }
+
+    .chip.fixed {
+      background: #eff6ff;
+      color: #1d4ed8;
+      border-color: #bfdbfe;
+    }
+
+    .chip button {
+      border: none;
+      background: transparent;
+      color: inherit;
+      font-size: 12px;
+      font-weight: 900;
+      padding: 0;
+      line-height: 1;
+    }
+
+    .main {
+      flex: 1;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 18px 14px 112px;
+    }
+
+    .deck {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      max-width: 520px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .card {
+      position: absolute;
+      width: min(90vw, 420px);
+      height: min(62vh, 520px);
+      background: var(--panel);
+      border-radius: 28px;
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      user-select: none;
+      touch-action: none;
+      transition: transform 0.24s ease, opacity 0.24s ease;
+      border: 1px solid rgba(17, 24, 39, 0.03);
+      overflow: hidden;
+    }
+
+    .card.dragging { transition: none; }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(37,99,235,0.03), rgba(239,68,68,0.02));
+      pointer-events: none;
+    }
+
+    .card-sub {
+      position: absolute;
+      top: 18px;
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      text-align: center;
+      padding: 0 14px;
+    }
+
+    .card-name {
+      font-size: clamp(48px, 12vw, 76px);
+      font-weight: 900;
+      letter-spacing: -0.04em;
+      z-index: 1;
+    }
+
+    .card-meta {
+      margin-top: 12px;
+      font-size: 14px;
+      color: var(--muted);
+      z-index: 1;
+      text-align: center;
+      padding: 0 20px;
+      line-height: 1.5;
+    }
+
+    .swipe-badge {
+      position: absolute;
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 900;
+      opacity: 0;
+      transition: opacity 0.12s ease;
+      z-index: 2;
+      backdrop-filter: blur(4px);
+    }
+
+    .badge-left {
+      left: 18px;
+      top: 18px;
+      color: var(--save);
+      background: rgba(5, 150, 105, 0.12);
+      border: 1px solid rgba(5, 150, 105, 0.24);
+    }
+
+    .badge-right {
+      right: 18px;
+      top: 18px;
+      color: var(--discard);
+      background: rgba(239, 68, 68, 0.12);
+      border: 1px solid rgba(239, 68, 68, 0.24);
+    }
+
+    .badge-up {
+      left: 50%;
+      bottom: 18px;
+      transform: translateX(-50%);
+      color: var(--up);
+      background: rgba(234, 88, 12, 0.12);
+      border: 1px solid rgba(234, 88, 12, 0.24);
+    }
+
+    .badge-down {
+      left: 50%;
+      top: 18px;
+      transform: translateX(-50%);
+      color: var(--down);
+      background: rgba(37, 99, 235, 0.12);
+      border: 1px solid rgba(37, 99, 235, 0.24);
+    }
+
+    .bottom-actions {
+      position: absolute;
+      bottom: 62px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 10px;
+      z-index: 8;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .action-btn {
+      border: none;
+      border-radius: 999px;
+      padding: 12px 16px;
+      background: var(--panel);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+      font-size: 14px;
+      font-weight: 800;
+      color: #374151;
+    }
+
+    .action-btn.primary {
+      background: #2563eb;
+      color: #fff;
+    }
+
+    .instructions {
+      position: absolute;
+      left: 14px;
+      right: 14px;
+      bottom: 14px;
+      background: rgba(255,255,255,0.94);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 12px 14px;
+      text-align: center;
+      font-size: 13px;
+      color: var(--muted);
+      box-shadow: 0 4px 14px rgba(0,0,0,0.04);
+      backdrop-filter: blur(8px);
+      line-height: 1.5;
+    }
+
+    .empty {
+      width: min(90vw, 420px);
+      background: var(--panel);
+      border-radius: 28px;
+      box-shadow: var(--shadow);
+      padding: 30px 24px;
+      text-align: center;
+      line-height: 1.7;
+    }
+
+    .modal-overlay, .saved-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.46);
+      display: none;
+      z-index: 100;
+      backdrop-filter: blur(6px);
+    }
+
+    .modal-overlay.show, .saved-overlay.show {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal {
+      width: min(92vw, 420px);
+      background: #fff;
+      border-radius: 22px;
+      padding: 22px 18px 16px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.18);
+    }
+
+    .modal h2 {
+      margin: 0;
+      font-size: 20px;
+      line-height: 1.35;
+    }
+
+    .modal p {
+      margin: 10px 0 16px;
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .modal-buttons {
+      display: grid;
+      gap: 8px;
+    }
+
+    .modal-btn {
+      width: 100%;
+      padding: 14px 14px;
+      border: none;
+      border-radius: 14px;
+      background: #f8fafc;
+      border: 1px solid #e5e7eb;
+      font-size: 15px;
+      font-weight: 800;
+      color: #111827;
+      line-height: 1.4;
+    }
+
+    .modal-btn.primary {
+      background: #eff6ff;
+      border-color: #bfdbfe;
+      color: #1d4ed8;
+    }
+
+    .modal-btn.warn {
+      background: #fff7ed;
+      border-color: #fed7aa;
+      color: #c2410c;
+    }
+
+    .modal-btn.cancel {
+      background: #f3f4f6;
+      color: #4b5563;
+      margin-top: 8px;
+    }
+
+    .saved-sheet {
+      position: absolute;
+      inset: 0;
+      background: #fff;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .saved-header {
+      padding: 16px 16px 12px;
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: flex-start;
+    }
+
+    .saved-header h2 {
+      margin: 0;
+      font-size: 20px;
+    }
+
+    .saved-sub {
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 6px;
+      line-height: 1.5;
+    }
+
+    .saved-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .saved-list {
+      flex: 1;
+      overflow-y: auto;
+      padding: 16px;
+      display: grid;
+      gap: 10px;
+      background: #f8fafc;
+    }
+
+    .saved-item {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 14px 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .saved-name {
+      font-size: 18px;
+      font-weight: 900;
+      letter-spacing: -0.02em;
+    }
+
+    .saved-meta {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    .saved-remove {
+      border: none;
+      padding: 8px 10px;
+      border-radius: 10px;
+      background: #fee2e2;
+      color: #991b1b;
+      font-size: 12px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 24px;
+      transform: translateX(-50%) translateY(20px);
+      background: rgba(17, 24, 39, 0.92);
+      color: #fff;
+      padding: 12px 16px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 800;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease, transform 0.2s ease;
+      z-index: 150;
+      max-width: calc(100vw - 24px);
+      text-align: center;
+      line-height: 1.4;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    @media (max-width: 520px) {
+      .meta-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 430px) {
+      .title { font-size: 16px; }
+      .card { height: min(58vh, 470px); }
+      .action-btn { padding: 11px 14px; font-size: 13px; }
+      .saved-name { font-size: 16px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="title-row">
+      <div class="title">
+        강씨 이름 후보 이어달리기
+        <small>총 14,884개 조합 · 랜덤 카드 · 세이브파일로 번갈아 이어서 쓰기</small>
+      </div>
+      <div class="top-actions">
+        <button class="pill-btn" onclick="triggerImport()">세이브 불러오기</button>
+        <button class="pill-btn" onclick="exportSaveFile()">세이브 내보내기</button>
+        <button class="pill-btn" onclick="openSavedOverlay()">보관함</button>
+        <button class="pill-btn danger" onclick="resetApp()">초기화</button>
+      </div>
+    </div>
+
+    <div class="meta-grid">
+      <div class="meta-card">
+        <label for="projectNameInput">프로젝트 이름</label>
+        <input id="projectNameInput" type="text" maxlength="40" placeholder="예: kang-baby-round1" />
+      </div>
+      <div class="meta-card">
+        <label for="editorNameInput">내 이름</label>
+        <input id="editorNameInput" type="text" maxlength="20" placeholder="예: 현서 / 지윤" />
+      </div>
+    </div>
+
+    <div class="meta-note" id="fileMeta"></div>
+    <div class="stats" id="stats"></div>
+
+    <div class="chips-wrap">
+      <div>
+        <div class="chip-row-title">배제된 음절</div>
+        <div class="chips" id="excludedChips"></div>
+      </div>
+      <div>
+        <div class="chip-row-title">위치 고정 음절</div>
+        <div class="chips" id="fixedChips"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="deck" id="deck"></div>
+
+    <div class="bottom-actions">
+      <button class="action-btn" onclick="manualDecision('save')">← 보관</button>
+      <button class="action-btn" onclick="manualDecision('discard')">버리기 →</button>
+      <button class="action-btn" onclick="manualDecision('exclude')">↑ 배제</button>
+      <button class="action-btn primary" onclick="manualDecision('fix')">↓ 위치 고정</button>
+    </div>
+
+    <div class="instructions">
+      왼쪽 스와이프 = 보관 · 오른쪽 스와이프 = 버리기 · 위 = 음절 배제 · 아래 = 위치 고정<br>
+      같은 파일을 서로 주고받으며 이어서 작업하세요. 상대에게 넘길 때는 반드시 <strong>세이브 내보내기</strong>를 눌러주세요.
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal">
+      <h2 id="modalTitle"></h2>
+      <p id="modalSubtitle"></p>
+      <div class="modal-buttons" id="modalButtons"></div>
+      <button class="modal-btn cancel" onclick="closeModal()">취소</button>
+    </div>
+  </div>
+
+  <div class="saved-overlay" id="savedOverlay">
+    <div class="saved-sheet">
+      <div class="saved-header">
+        <div>
+          <h2>보관된 이름</h2>
+          <div class="saved-sub" id="savedSub"></div>
+        </div>
+        <div class="saved-actions">
+          <button class="pill-btn" onclick="copySavedNames()">복사</button>
+          <button class="pill-btn" onclick="downloadSavedNames()">TXT 저장</button>
+          <button class="pill-btn danger" onclick="closeSavedOverlay()">닫기</button>
+        </div>
+      </div>
+      <div class="saved-list" id="savedList"></div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+  <input id="importFileInput" type="file" accept="application/json,.json" style="display:none" />
+
+  <script>
+    const APP_VERSION = 5;
+    const STORAGE_KEY = 'kang_name_swipe_v5_local';
+    const SETTINGS_KEY = 'kang_name_swipe_v5_settings';
+    const EXPORT_FILE_PREFIX = 'kang-name-relay-save';
+
+    const SYLLABLES = [
+      '건', '결', '경', '공', '관', '교', '권', '규', '균', '나',
+      '누', '다', '단', '대', '도', '라', '락', '람', '랑', '량',
+      '령', '례', '로', '론', '료', '류', '률', '리', '린', '마',
+      '면', '무', '민', '바', '배', '별', '보', '본', '비', '빈',
+      '사', '산', '상', '새', '석', '선', '설', '성', '세', '소',
+      '손', '솔', '송', '수', '승', '시', '식', '신', '아', '안',
+      '어', '여', '연', '열', '영', '예', '오', '온', '올', '우',
+      '운', '울', '원', '유', '윤', '율', '은', '의', '이', '익',
+      '인', '자', '작', '장', '재', '적', '전', '정', '제', '조',
+      '종', '주', '준', '중', '지', '직', '진', '집', '차', '찬',
+      '채', '천', '철', '초', '탐', '태', '판', '하', '한', '해',
+      '헌', '혁', '현', '혜', '호', '화', '환', '회', '효', '훈',
+      '휘', '희'
+    ];
+
+    const ALL_NAMES = [];
+    for (const first of SYLLABLES) {
+      for (const second of SYLLABLES) {
+        ALL_NAMES.push({ first, second, full: `강${first}${second}` });
+      }
+    }
+
+    function defaultState() {
+      return {
+        version: APP_VERSION,
+        currentCardIndex: null,
+        reviewedIndices: [],
+        savedNames: [],
+        excludedAll: [],
+        fixedPositions: {
+          first: null,
+          second: null
+        },
+        metadata: {
+          projectName: 'kang-baby-round1',
+          syllablesHash: hashSyllables(SYLLABLES),
+          sourceAppVersion: APP_VERSION,
+          lastEditedBy: '',
+          lastSavedAt: '',
+          relayCount: 0
+        }
+      };
+    }
+
+    function defaultSettings() {
+      return {
+        editorName: '',
+        projectName: 'kang-baby-round1'
+      };
+    }
+
+    function loadSettings() {
+      try {
+        const raw = localStorage.getItem(SETTINGS_KEY);
+        if (!raw) return defaultSettings();
+        const parsed = JSON.parse(raw);
+        return {
+          editorName: typeof parsed.editorName === 'string' ? parsed.editorName : '',
+          projectName: typeof parsed.projectName === 'string' && parsed.projectName.trim() ? parsed.projectName : 'kang-baby-round1'
+        };
+      } catch (e) {
+        return defaultSettings();
+      }
+    }
+
+    function saveSettings() {
+      localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings));
+    }
+
+    function hashSyllables(list) {
+      const source = list.join('|');
+      let hash = 2166136261;
+      for (let i = 0; i < source.length; i += 1) {
+        hash ^= source.charCodeAt(i);
+        hash = Math.imul(hash, 16777619);
+      }
+      return `fnv-${(hash >>> 0).toString(16)}`;
+    }
+
+    function normalizeState(raw) {
+      const base = defaultState();
+      if (!raw || typeof raw !== 'object') return base;
+
+      base.currentCardIndex = Number.isInteger(raw.currentCardIndex) ? raw.currentCardIndex : null;
+      base.reviewedIndices = Array.isArray(raw.reviewedIndices) ? raw.reviewedIndices.filter(Number.isInteger) : [];
+      base.savedNames = Array.isArray(raw.savedNames)
+        ? raw.savedNames
+            .filter(item => item && typeof item.full === 'string' && typeof item.first === 'string' && typeof item.second === 'string')
+            .map(item => ({ full: item.full, first: item.first, second: item.second }))
+        : [];
+      base.excludedAll = Array.isArray(raw.excludedAll) ? raw.excludedAll.filter(item => typeof item === 'string') : [];
+      base.fixedPositions = {
+        first: raw.fixedPositions && typeof raw.fixedPositions.first === 'string' ? raw.fixedPositions.first : null,
+        second: raw.fixedPositions && typeof raw.fixedPositions.second === 'string' ? raw.fixedPositions.second : null
+      };
+      base.metadata = {
+        projectName: raw.metadata && typeof raw.metadata.projectName === 'string' && raw.metadata.projectName.trim() ? raw.metadata.projectName : base.metadata.projectName,
+        syllablesHash: raw.metadata && typeof raw.metadata.syllablesHash === 'string' ? raw.metadata.syllablesHash : hashSyllables(SYLLABLES),
+        sourceAppVersion: raw.metadata && Number.isInteger(raw.metadata.sourceAppVersion) ? raw.metadata.sourceAppVersion : APP_VERSION,
+        lastEditedBy: raw.metadata && typeof raw.metadata.lastEditedBy === 'string' ? raw.metadata.lastEditedBy : '',
+        lastSavedAt: raw.metadata && typeof raw.metadata.lastSavedAt === 'string' ? raw.metadata.lastSavedAt : '',
+        relayCount: raw.metadata && Number.isInteger(raw.metadata.relayCount) ? raw.metadata.relayCount : 0
+      };
+      return base;
+    }
+
+    function loadState() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return defaultState();
+        return normalizeState(JSON.parse(raw));
+      } catch (e) {
+        return defaultState();
+      }
+    }
+
+    let settings = loadSettings();
+    let state = loadState();
+    let reviewedSet = new Set(state.reviewedIndices);
+    let currentCardNameObj = null;
+    let isBusy = false;
+    let toastTimer = null;
+
+    const deck = document.getElementById('deck');
+    const statsEl = document.getElementById('stats');
+    const excludedChipsEl = document.getElementById('excludedChips');
+    const fixedChipsEl = document.getElementById('fixedChips');
+    const modalOverlay = document.getElementById('modalOverlay');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalSubtitle = document.getElementById('modalSubtitle');
+    const modalButtons = document.getElementById('modalButtons');
+    const savedOverlay = document.getElementById('savedOverlay');
+    const savedList = document.getElementById('savedList');
+    const savedSub = document.getElementById('savedSub');
+    const toastEl = document.getElementById('toast');
+    const fileMetaEl = document.getElementById('fileMeta');
+    const importFileInput = document.getElementById('importFileInput');
+    const editorNameInput = document.getElementById('editorNameInput');
+    const projectNameInput = document.getElementById('projectNameInput');
+
+    editorNameInput.value = settings.editorName || '';
+    projectNameInput.value = settings.projectName || state.metadata.projectName || 'kang-baby-round1';
+    syncProjectNameToState();
+
+    editorNameInput.addEventListener('input', () => {
+      settings.editorName = editorNameInput.value.trim();
+      saveSettings();
+      renderFileMeta();
+    });
+
+    projectNameInput.addEventListener('input', () => {
+      const nextValue = projectNameInput.value.trim() || 'kang-baby-round1';
+      settings.projectName = nextValue;
+      state.metadata.projectName = nextValue;
+      saveSettings();
+      saveState();
+      renderFileMeta();
+    });
+
+    importFileInput.addEventListener('change', handleImportFileChange);
+
+    function syncProjectNameToState() {
+      const projectName = settings.projectName || state.metadata.projectName || 'kang-baby-round1';
+      state.metadata.projectName = projectName;
+      if (!projectNameInput.value.trim()) {
+        projectNameInput.value = projectName;
+      }
+    }
+
+    function syncReviewedArray() {
+      state.reviewedIndices = Array.from(reviewedSet).sort((a, b) => a - b);
+    }
+
+    function saveState() {
+      syncReviewedArray();
+      syncProjectNameToState();
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    }
+
+    function formatDateTime(isoText) {
+      if (!isoText) return '없음';
+      const date = new Date(isoText);
+      if (Number.isNaN(date.getTime())) return isoText;
+      return new Intl.DateTimeFormat('ko-KR', {
+        year: 'numeric', month: '2-digit', day: '2-digit',
+        hour: '2-digit', minute: '2-digit', second: '2-digit',
+        hour12: false
+      }).format(date);
+    }
+
+    function renderFileMeta() {
+      const editor = settings.editorName || '미입력';
+      const project = state.metadata.projectName || settings.projectName || 'kang-baby-round1';
+      const lastEditor = state.metadata.lastEditedBy || '아직 없음';
+      const lastSavedAt = state.metadata.lastSavedAt ? formatDateTime(state.metadata.lastSavedAt) : '아직 없음';
+      const relayCount = Number.isInteger(state.metadata.relayCount) ? state.metadata.relayCount : 0;
+
+      fileMetaEl.innerHTML = `현재 내 이름: <strong>${escapeHtml(editor)}</strong> · 프로젝트: <strong>${escapeHtml(project)}</strong><br>` +
+        `이 파일의 최근 작업자: <strong>${escapeHtml(lastEditor)}</strong> · 마지막 파일 저장: <strong>${escapeHtml(lastSavedAt)}</strong> · 이어받은 횟수: <strong>${relayCount.toLocaleString()}</strong>회`;
+    }
+
+    function escapeHtml(value) {
+      return String(value)
+        .replaceAll('&', '&amp;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;')
+        .replaceAll('"', '&quot;')
+        .replaceAll("'", '&#039;');
+    }
+
+    function matchesActiveRules(nameObj) {
+      if (state.excludedAll.includes(nameObj.first) || state.excludedAll.includes(nameObj.second)) return false;
+      if (state.fixedPositions.first && nameObj.first !== state.fixedPositions.first) return false;
+      if (state.fixedPositions.second && nameObj.second !== state.fixedPositions.second) return false;
+      return true;
+    }
+
+    function isCurrentCardStillValid() {
+      if (!Number.isInteger(state.currentCardIndex)) return false;
+      if (state.currentCardIndex < 0 || state.currentCardIndex >= ALL_NAMES.length) return false;
+      if (reviewedSet.has(state.currentCardIndex)) return false;
+      return matchesActiveRules(ALL_NAMES[state.currentCardIndex]);
+    }
+
+    function getEligibleIndices() {
+      const eligible = [];
+      for (let i = 0; i < ALL_NAMES.length; i += 1) {
+        if (reviewedSet.has(i)) continue;
+        if (!matchesActiveRules(ALL_NAMES[i])) continue;
+        eligible.push(i);
+      }
+      return eligible;
+    }
+
+    function getEligibleCount() {
+      let count = 0;
+      for (let i = 0; i < ALL_NAMES.length; i += 1) {
+        if (reviewedSet.has(i)) continue;
+        if (!matchesActiveRules(ALL_NAMES[i])) continue;
+        count += 1;
+      }
+      return count;
+    }
+
+    function ensureCurrentCardIndex() {
+      if (isCurrentCardStillValid()) return state.currentCardIndex;
+      const eligible = getEligibleIndices();
+      if (eligible.length === 0) {
+        state.currentCardIndex = null;
+        return null;
+      }
+      state.currentCardIndex = eligible[Math.floor(Math.random() * eligible.length)];
+      return state.currentCardIndex;
+    }
+
+    function pruneSavedNames() {
+      const seen = new Set();
+      state.savedNames = state.savedNames.filter(item => {
+        if (!matchesActiveRules(item)) return false;
+        if (seen.has(item.full)) return false;
+        seen.add(item.full);
+        return true;
+      });
+    }
+
+    function renderStats() {
+      const reviewedCount = reviewedSet.size;
+      const remaining = getEligibleCount();
+      const filteredCount = ALL_NAMES.length - reviewedCount - remaining;
+      statsEl.innerHTML = `검토 완료: <strong>${reviewedCount.toLocaleString()}</strong> / ${ALL_NAMES.length.toLocaleString()}<br>` +
+        `보관함: <strong>${state.savedNames.length.toLocaleString()}</strong>개 · 현재 필터로 숨김: <strong>${Math.max(0, filteredCount).toLocaleString()}</strong>개 · 지금 볼 수 있는 후보: <strong>${remaining.toLocaleString()}</strong>개`;
+    }
+
+    function renderChips() {
+      excludedChipsEl.innerHTML = '';
+      fixedChipsEl.innerHTML = '';
+
+      if (state.excludedAll.length === 0) {
+        excludedChipsEl.innerHTML = '<span style="font-size:12px;color:#9ca3af;">없음</span>';
+      } else {
+        [...state.excludedAll].sort((a, b) => a.localeCompare(b, 'ko')).forEach(syllable => {
+          const chip = document.createElement('div');
+          chip.className = 'chip exclude';
+          chip.innerHTML = `<span>${escapeHtml(syllable)} 전체 배제</span><button type="button" aria-label="삭제">✕</button>`;
+          chip.querySelector('button').onclick = () => removeExcludedSyllable(syllable);
+          excludedChipsEl.appendChild(chip);
+        });
+      }
+
+      const fixedEntries = [];
+      if (state.fixedPositions.first) fixedEntries.push({ position: 'first', syllable: state.fixedPositions.first });
+      if (state.fixedPositions.second) fixedEntries.push({ position: 'second', syllable: state.fixedPositions.second });
+
+      if (fixedEntries.length === 0) {
+        fixedChipsEl.innerHTML = '<span style="font-size:12px;color:#9ca3af;">없음</span>';
+      } else {
+        fixedEntries.forEach(({ position, syllable }) => {
+          const label = position === 'first' ? `가운데 ${syllable} 고정 · 강${syllable}□만` : `끝 ${syllable} 고정 · 강□${syllable}만`;
+          const chip = document.createElement('div');
+          chip.className = 'chip fixed';
+          chip.innerHTML = `<span>${escapeHtml(label)}</span><button type="button" aria-label="삭제">✕</button>`;
+          chip.querySelector('button').onclick = () => removeFixedRule(position);
+          fixedChipsEl.appendChild(chip);
+        });
+      }
+    }
+
+    function renderCard() {
+      const currentIndex = ensureCurrentCardIndex();
+      currentCardNameObj = Number.isInteger(currentIndex) ? ALL_NAMES[currentIndex] : null;
+      saveState();
+      renderFileMeta();
+      renderStats();
+      renderChips();
+      deck.innerHTML = '';
+
+      if (!currentCardNameObj) {
+        const empty = document.createElement('div');
+        empty.className = 'empty';
+        empty.innerHTML = `<h2 style="margin-top:0;">지금 볼 수 있는 카드가 없습니다.</h2>
+          <div style="color:#6b7280; margin-top:10px;">
+            모든 랜덤 카드를 다 봤거나, 현재 배제/위치 고정 규칙이 너무 강합니다.<br>
+            상단 칩을 눌러 규칙을 해제하거나 초기화해보세요.
+          </div>`;
+        deck.appendChild(empty);
+        return;
+      }
+
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.innerHTML = `
+        <div class="swipe-badge badge-left">보관</div>
+        <div class="swipe-badge badge-right">버리기</div>
+        <div class="swipe-badge badge-up">음절 배제</div>
+        <div class="swipe-badge badge-down">위치 고정</div>
+        <div class="card-sub">랜덤 후보 · 강 + ${escapeHtml(currentCardNameObj.first)} + ${escapeHtml(currentCardNameObj.second)}</div>
+        <div class="card-name">${escapeHtml(currentCardNameObj.full)}</div>
+        <div class="card-meta">지금 조건에 맞는 카드 중 랜덤으로 표시 중</div>
+      `;
+      deck.appendChild(card);
+      attachSwipe(card, currentCardNameObj);
+    }
+
+    function advanceFromCurrent() {
+      if (Number.isInteger(state.currentCardIndex)) {
+        reviewedSet.add(state.currentCardIndex);
+      }
+      state.currentCardIndex = null;
+    }
+
+    function animateAndAdvance(card, direction, after) {
+      if (!card) return;
+      isBusy = true;
+      if (direction === 'save') {
+        card.style.transform = 'translate(-120vw, 20px) rotate(-24deg)';
+      } else {
+        card.style.transform = 'translate(120vw, 20px) rotate(24deg)';
+      }
+      card.style.opacity = '0';
+      window.setTimeout(() => {
+        after();
+        isBusy = false;
+        renderCard();
+      }, 220);
+    }
+
+    function recordSave(nameObj) {
+      if (!state.savedNames.some(item => item.full === nameObj.full)) {
+        state.savedNames.push({ full: nameObj.full, first: nameObj.first, second: nameObj.second });
+      }
+      advanceFromCurrent();
+      saveState();
+      showToast(`${nameObj.full} 보관`);
+    }
+
+    function recordDiscard(nameObj) {
+      advanceFromCurrent();
+      saveState();
+      showToast(`${nameObj.full} 버림`);
+    }
+
+    function removeExcludedSyllable(syllable) {
+      state.excludedAll = state.excludedAll.filter(item => item !== syllable);
+      saveState();
+      renderCard();
+      showToast(`'${syllable}' 배제를 해제했습니다.`);
+    }
+
+    function removeFixedRule(position) {
+      const syllable = state.fixedPositions[position];
+      state.fixedPositions[position] = null;
+      saveState();
+      renderCard();
+      showToast(`'${syllable}' 위치 고정을 해제했습니다.`);
+    }
+
+    function applyExclude(syllable) {
+      if (!state.excludedAll.includes(syllable)) {
+        state.excludedAll.push(syllable);
+      }
+      if (state.fixedPositions.first === syllable) state.fixedPositions.first = null;
+      if (state.fixedPositions.second === syllable) state.fixedPositions.second = null;
+      pruneSavedNames();
+      closeModal();
+      saveState();
+      renderCard();
+      showToast(`'${syllable}'가 들어간 조합을 모두 제외했습니다.`);
+    }
+
+    function applyFixedRule(syllable, position) {
+      state.fixedPositions[position] = syllable;
+      state.excludedAll = state.excludedAll.filter(item => item !== syllable);
+      pruneSavedNames();
+      closeModal();
+      saveState();
+      renderCard();
+      const preview = position === 'first' ? `강${syllable}□` : `강□${syllable}`;
+      showToast(`이제 ${preview} 형태 카드만 계속 보여줍니다.`);
+    }
+
+    function openModal(config) {
+      modalTitle.textContent = config.title;
+      modalSubtitle.textContent = config.subtitle || '';
+      modalButtons.innerHTML = '';
+
+      (config.buttons || []).forEach(btn => {
+        const button = document.createElement('button');
+        button.className = `modal-btn ${btn.className || ''}`.trim();
+        button.innerHTML = btn.label;
+        button.onclick = btn.onClick;
+        modalButtons.appendChild(button);
+      });
+
+      modalOverlay.classList.add('show');
+    }
+
+    function closeModal() {
+      modalOverlay.classList.remove('show');
+    }
+
+    function openExcludeModal(nameObj) {
+      const options = Array.from(new Set([nameObj.first, nameObj.second]));
+      openModal({
+        title: '어떤 음절을 배제할까요?',
+        subtitle: '선택한 음절이 들어간 이름 조합은 전부 사라집니다.',
+        buttons: options.map(syllable => ({
+          label: `'${escapeHtml(syllable)}' 배제`,
+          className: 'warn',
+          onClick: () => applyExclude(syllable)
+        }))
+      });
+    }
+
+    function openFixSyllableModal(nameObj) {
+      const options = Array.from(new Set([nameObj.first, nameObj.second]));
+      openModal({
+        title: '어떤 음절을 위치 고정할까요?',
+        subtitle: '고정할 음절을 먼저 선택하세요.',
+        buttons: options.map(syllable => ({
+          label: `'${escapeHtml(syllable)}' 선택`,
+          className: 'primary',
+          onClick: () => openFixPositionModal(syllable)
+        }))
+      });
+    }
+
+    function openFixPositionModal(syllable) {
+      openModal({
+        title: `'${syllable}'를 어느 위치에 고정할까요?`,
+        subtitle: '선택한 위치에 맞는 카드들만 계속 랜덤으로 나옵니다.',
+        buttons: [
+          {
+            label: `<strong>가운데 고정</strong><br><span style="font-size:12px;color:#6b7280;">강${escapeHtml(syllable)}□ 카드만 보기</span>`,
+            className: 'primary',
+            onClick: () => applyFixedRule(syllable, 'first')
+          },
+          {
+            label: `<strong>끝 고정</strong><br><span style="font-size:12px;color:#6b7280;">강□${escapeHtml(syllable)} 카드만 보기</span>`,
+            className: 'primary',
+            onClick: () => applyFixedRule(syllable, 'second')
+          }
+        ]
+      });
+    }
+
+    function manualDecision(type) {
+      if (!currentCardNameObj || isBusy || modalOverlay.classList.contains('show')) return;
+      const card = document.querySelector('.card');
+      if (type === 'save') {
+        animateAndAdvance(card, 'save', () => recordSave(currentCardNameObj));
+      } else if (type === 'discard') {
+        animateAndAdvance(card, 'discard', () => recordDiscard(currentCardNameObj));
+      } else if (type === 'exclude') {
+        openExcludeModal(currentCardNameObj);
+      } else if (type === 'fix') {
+        openFixSyllableModal(currentCardNameObj);
+      }
+    }
+
+    function attachSwipe(card, nameObj) {
+      let startX = 0;
+      let startY = 0;
+      let dx = 0;
+      let dy = 0;
+      let dragging = false;
+
+      const badgeLeft = card.querySelector('.badge-left');
+      const badgeRight = card.querySelector('.badge-right');
+      const badgeUp = card.querySelector('.badge-up');
+      const badgeDown = card.querySelector('.badge-down');
+
+      card.addEventListener('pointerdown', e => {
+        if (isBusy || modalOverlay.classList.contains('show')) return;
+        dragging = true;
+        dx = 0;
+        dy = 0;
+        startX = e.clientX;
+        startY = e.clientY;
+        card.classList.add('dragging');
+        card.setPointerCapture(e.pointerId);
+      });
+
+      card.addEventListener('pointermove', e => {
+        if (!dragging) return;
+        dx = e.clientX - startX;
+        dy = e.clientY - startY;
+        const rotate = dx * 0.06;
+        card.style.transform = `translate(${dx}px, ${dy}px) rotate(${rotate}deg)`;
+
+        const xStrength = Math.min(Math.abs(dx) / 120, 1);
+        const yStrength = Math.min(Math.abs(dy) / 120, 1);
+        badgeLeft.style.opacity = dx < 0 && Math.abs(dx) > Math.abs(dy) ? xStrength : 0;
+        badgeRight.style.opacity = dx > 0 && Math.abs(dx) > Math.abs(dy) ? xStrength : 0;
+        badgeUp.style.opacity = dy < 0 && Math.abs(dy) > Math.abs(dx) ? yStrength : 0;
+        badgeDown.style.opacity = dy > 0 && Math.abs(dy) > Math.abs(dx) ? yStrength : 0;
+      });
+
+      function resetCard() {
+        dragging = false;
+        card.classList.remove('dragging');
+        card.style.transform = '';
+        badgeLeft.style.opacity = 0;
+        badgeRight.style.opacity = 0;
+        badgeUp.style.opacity = 0;
+        badgeDown.style.opacity = 0;
+      }
+
+      function handleRelease() {
+        if (!dragging) return;
+
+        const absX = Math.abs(dx);
+        const absY = Math.abs(dy);
+        const horizontalThreshold = 90;
+        const verticalThreshold = 100;
+
+        if (absX > horizontalThreshold && absX > absY * 1.15) {
+          dragging = false;
+          card.classList.remove('dragging');
+          badgeLeft.style.opacity = 0;
+          badgeRight.style.opacity = 0;
+          badgeUp.style.opacity = 0;
+          badgeDown.style.opacity = 0;
+
+          if (dx < 0) {
+            animateAndAdvance(card, 'save', () => recordSave(nameObj));
+          } else {
+            animateAndAdvance(card, 'discard', () => recordDiscard(nameObj));
+          }
+          return;
+        }
+
+        if (absY > verticalThreshold && absY > absX * 1.15) {
+          resetCard();
+          if (dy < 0) {
+            openExcludeModal(nameObj);
+          } else {
+            openFixSyllableModal(nameObj);
+          }
+          return;
+        }
+
+        resetCard();
+      }
+
+      card.addEventListener('pointerup', handleRelease);
+      card.addEventListener('pointercancel', resetCard);
+      card.addEventListener('lostpointercapture', () => {
+        if (dragging) handleRelease();
+      });
+    }
+
+    function openSavedOverlay() {
+      renderSavedList();
+      savedOverlay.classList.add('show');
+    }
+
+    function closeSavedOverlay() {
+      savedOverlay.classList.remove('show');
+    }
+
+    function renderSavedList() {
+      savedSub.textContent = `총 ${state.savedNames.length.toLocaleString()}개 · 파일로 넘기려면 상단에서 세이브 내보내기를 누르세요.`;
+      savedList.innerHTML = '';
+
+      if (state.savedNames.length === 0) {
+        savedList.innerHTML = '<div class="saved-item"><div><div class="saved-name">보관된 이름이 없습니다.</div><div class="saved-meta">왼쪽 스와이프로 보관해보세요.</div></div></div>';
+        return;
+      }
+
+      state.savedNames.forEach((item, idx) => {
+        const row = document.createElement('div');
+        row.className = 'saved-item';
+        row.innerHTML = `
+          <div>
+            <div class="saved-name">${escapeHtml(item.full)}</div>
+            <div class="saved-meta">${idx + 1}번째 보관 · ${escapeHtml(item.first)}/${escapeHtml(item.second)}</div>
+          </div>
+          <button class="saved-remove">삭제</button>
+        `;
+        row.querySelector('button').onclick = () => {
+          state.savedNames = state.savedNames.filter(saved => saved.full !== item.full);
+          saveState();
+          renderSavedList();
+          renderStats();
+          showToast(`${item.full} 삭제`);
+        };
+        savedList.appendChild(row);
+      });
+    }
+
+    function copySavedNames() {
+      const text = state.savedNames.map(item => item.full).join('\n');
+      if (!text) {
+        showToast('복사할 이름이 없습니다.');
+        return;
+      }
+      navigator.clipboard.writeText(text).then(() => {
+        showToast('보관함 목록을 복사했습니다.');
+      }).catch(() => {
+        showToast('복사에 실패했습니다.');
+      });
+    }
+
+    function downloadSavedNames() {
+      const text = state.savedNames.map(item => item.full).join('\n');
+      if (!text) {
+        showToast('저장할 이름이 없습니다.');
+        return;
+      }
+      const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'kang_saved_names.txt';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+      showToast('보관함을 TXT로 저장했습니다.');
+    }
+
+    function buildExportPayload() {
+      syncReviewedArray();
+      syncProjectNameToState();
+      return {
+        app: 'kang-name-relay',
+        version: APP_VERSION,
+        exportedAt: new Date().toISOString(),
+        state: {
+          ...state,
+          metadata: {
+            ...state.metadata,
+            projectName: projectNameInput.value.trim() || state.metadata.projectName || 'kang-baby-round1',
+            syllablesHash: hashSyllables(SYLLABLES),
+            sourceAppVersion: APP_VERSION,
+            lastEditedBy: settings.editorName || '이름 미입력',
+            lastSavedAt: new Date().toISOString(),
+            relayCount: (state.metadata.relayCount || 0) + 1
+          }
+        }
+      };
+    }
+
+    function exportSaveFile() {
+      const payload = buildExportPayload();
+      state = normalizeState(payload.state);
+      reviewedSet = new Set(state.reviewedIndices);
+      saveState();
+      renderFileMeta();
+
+      const text = JSON.stringify(payload, null, 2);
+      const blob = new Blob([text], { type: 'application/json;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const stamp = payload.exportedAt.replace(/[:.]/g, '-');
+      const safeProject = (payload.state.metadata.projectName || 'kang-baby-round1').replace(/[^a-zA-Z0-9-_가-힣]/g, '_');
+      const safeEditor = (settings.editorName || 'unknown').replace(/[^a-zA-Z0-9-_가-힣]/g, '_');
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `${EXPORT_FILE_PREFIX}-${safeProject}-${safeEditor}-${stamp}.json`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+      showToast('세이브파일을 내보냈습니다. 이 파일을 상대에게 보내주세요.');
+    }
+
+    function triggerImport() {
+      importFileInput.value = '';
+      importFileInput.click();
+    }
+
+    async function handleImportFileChange(event) {
+      const file = event.target.files && event.target.files[0];
+      if (!file) return;
+
+      try {
+        const text = await file.text();
+        const payload = JSON.parse(text);
+        if (!payload || payload.app !== 'kang-name-relay' || !payload.state) {
+          alert('이 파일은 올바른 세이브파일이 아닙니다.');
+          return;
+        }
+
+        const importedState = normalizeState(payload.state);
+        const expectedHash = hashSyllables(SYLLABLES);
+        if (importedState.metadata.syllablesHash !== expectedHash) {
+          alert('이 세이브파일은 현재 음절 리스트와 맞지 않습니다.');
+          return;
+        }
+
+        const importedEditor = importedState.metadata.lastEditedBy || '이름 미입력';
+        const importedTime = importedState.metadata.lastSavedAt ? formatDateTime(importedState.metadata.lastSavedAt) : '시간 없음';
+        const ok = confirm(`현재 로컬 진행 상태를 덮어쓰고 불러올까요?\n\n최근 작업자: ${importedEditor}\n마지막 저장: ${importedTime}`);
+        if (!ok) return;
+
+        state = importedState;
+        reviewedSet = new Set(state.reviewedIndices);
+        syncProjectNameToState();
+        projectNameInput.value = state.metadata.projectName || settings.projectName || 'kang-baby-round1';
+        settings.projectName = projectNameInput.value.trim() || 'kang-baby-round1';
+        saveSettings();
+        saveState();
+        closeModal();
+        closeSavedOverlay();
+        renderCard();
+        showToast('세이브파일을 불러왔습니다. 여기서 이어서 작업하세요.');
+      } catch (error) {
+        console.error(error);
+        alert('세이브파일을 읽는 중 오류가 발생했습니다.');
+      }
+    }
+
+    function resetApp() {
+      const ok = confirm('진행 상태, 보관함, 배제/고정 규칙을 모두 초기화할까요?');
+      if (!ok) return;
+      state = defaultState();
+      reviewedSet = new Set();
+      syncProjectNameToState();
+      saveState();
+      closeModal();
+      closeSavedOverlay();
+      renderCard();
+      showToast('초기화했습니다.');
+    }
+
+    function showToast(message) {
+      clearTimeout(toastTimer);
+      toastEl.textContent = message;
+      toastEl.classList.add('show');
+      toastTimer = setTimeout(() => toastEl.classList.remove('show'), 1900);
+    }
+
+    modalOverlay.addEventListener('click', e => {
+      if (e.target === modalOverlay) closeModal();
+    });
+
+    savedOverlay.addEventListener('click', e => {
+      if (e.target === savedOverlay) closeSavedOverlay();
+    });
+
+    renderCard();
+  </script>
+</body>
+</html>
