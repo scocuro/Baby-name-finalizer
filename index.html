@@ -336,7 +336,7 @@
       border-radius: 22px;
       padding: 10px 12px;
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(5, 1fr);
       gap: 8px;
     }
 
@@ -369,6 +369,16 @@
     .footer-btn.fix {
       background: #eff6ff;
       color: #1d4ed8;
+    }
+
+    .footer-btn.undo {
+      background: #f5f3ff;
+      color: #6d28d9;
+    }
+
+    .footer-btn:disabled {
+      opacity: .45;
+      cursor: not-allowed;
     }
 
     .overlay {
@@ -622,7 +632,7 @@
       }
 
       .footer-bar {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(3, 1fr);
       }
     }
   </style>
@@ -684,6 +694,7 @@
   <div class="footer-bar">
     <button class="footer-btn save" id="saveActionBtn">왼쪽 = 보관</button>
     <button class="footer-btn discard" id="discardActionBtn">오른쪽 = 버림</button>
+    <button class="footer-btn undo" id="undoActionBtn" disabled>이전 카드 복구</button>
     <button class="footer-btn exclude" id="excludeActionBtn">위 = 음절 배제</button>
     <button class="footer-btn fix" id="fixActionBtn">아래 = 위치 고정</button>
   </div>
@@ -781,6 +792,9 @@
     let savedState = loadSavedState();
     let currentCard = null;
     let toastTimer = null;
+    let forcedNextCardId = null;
+    const actionHistory = [];
+    const MAX_ACTION_HISTORY = 30;
 
     const drawer = document.getElementById('drawer');
     const toggleDrawerBtn = document.getElementById('toggleDrawerBtn');
@@ -806,6 +820,7 @@
     const copySavedBtn = document.getElementById('copySavedBtn');
     const exportSavedTxtBtn = document.getElementById('exportSavedTxtBtn');
     const exportSavedTxtBtnTop = document.getElementById('exportSavedTxtBtnTop');
+    const undoActionBtn = document.getElementById('undoActionBtn');
     const toastEl = document.getElementById('toast');
 
     projectNameInput.value = coreState.projectName || '';
@@ -850,6 +865,8 @@
             onClick: () => {
               coreState = defaultCoreState();
               savedState = defaultSavedState();
+              actionHistory.length = 0;
+              forcedNextCardId = null;
               projectNameInput.value = coreState.projectName;
               editorNameInput.value = '';
               persistAll();
@@ -879,6 +896,8 @@
       if (currentCard) promptFixStep1(currentCard.data);
     });
 
+    undoActionBtn.addEventListener('click', undoLastAction);
+
     savedMask.addEventListener('click', closeSavedSheet);
     closeSavedBtn.addEventListener('click', closeSavedSheet);
 
@@ -901,6 +920,7 @@
       renderStats();
       renderChips();
       renderSavedSheet();
+      updateUndoButton();
       renderCard();
     }
 
@@ -922,7 +942,8 @@
         `검토 완료: <b>${seenCount.toLocaleString()}</b>개`,
         `최근 저장: <b>${lastSaved}</b>`,
         `최근 작업자: <b>${editor}</b>`,
-        `로컬 백업: <b>${backupExists ? '있음' : '없음'}</b>`
+        `로컬 백업: <b>${backupExists ? '있음' : '없음'}</b>`,
+        `이전 카드 복구: <b>${actionHistory.length}건 가능</b>`
       ].join('<br>');
     }
 
@@ -1033,12 +1054,14 @@
           <div class="tag-row">
             <button class="pill" id="openSavedInline">보관함 보기</button>
             <button class="pill gray" id="openDrawerInline">설정 열기</button>
+            <button class="pill" id="undoInlineBtn">이전 카드 복구</button>
           </div>
         `;
         deck.appendChild(empty);
         currentCard = null;
         empty.querySelector('#openSavedInline').addEventListener('click', openSavedSheet);
         empty.querySelector('#openDrawerInline').addEventListener('click', () => drawer.classList.add('open'));
+        empty.querySelector('#undoInlineBtn').addEventListener('click', undoLastAction);
         return;
       }
 
@@ -1126,10 +1149,12 @@
       if (direction === 'left') {
         addSaved(data);
         markSeen(data.id);
+        pushActionHistory({ type: 'save', item: data });
         animateOut(el, -window.innerWidth * 1.2, 18);
         showToast(`보관: ${data.full}`);
       } else if (direction === 'right') {
         markSeen(data.id);
+        pushActionHistory({ type: 'discard', item: data });
         animateOut(el, window.innerWidth * 1.2, -18);
         showToast(`버림: ${data.full}`);
       }
@@ -1296,7 +1321,15 @@
 
     function pickRandomRemaining() {
       const pool = getRemainingPool();
-      if (pool.length === 0) return null;
+      if (pool.length === 0) {
+        forcedNextCardId = null;
+        return null;
+      }
+      if (forcedNextCardId) {
+        const forced = pool.find(item => item.id === forcedNextCardId);
+        forcedNextCardId = null;
+        if (forced) return forced;
+      }
       return pool[Math.floor(Math.random() * pool.length)];
     }
 
@@ -1307,6 +1340,57 @@
       if (coreState.fixedMiddle && item.first !== coreState.fixedMiddle) return false;
       if (coreState.fixedEnd && item.second !== coreState.fixedEnd) return false;
       return true;
+    }
+
+    function pushActionHistory(entry) {
+      actionHistory.push({
+        type: entry.type,
+        item: {
+          id: entry.item.id,
+          full: entry.item.full,
+          first: entry.item.first,
+          second: entry.item.second
+        },
+        at: Date.now()
+      });
+      if (actionHistory.length > MAX_ACTION_HISTORY) {
+        actionHistory.shift();
+      }
+      updateUndoButton();
+    }
+
+    function updateUndoButton() {
+      if (!undoActionBtn) return;
+      undoActionBtn.disabled = actionHistory.length === 0;
+      undoActionBtn.textContent = actionHistory.length === 0 ? '이전 카드 복구' : `이전 카드 복구 (${actionHistory.length})`;
+    }
+
+    function removeSeen(id) {
+      const before = coreState.seenIds.length;
+      coreState.seenIds = coreState.seenIds.filter(x => x !== id);
+      return coreState.seenIds.length !== before;
+    }
+
+    function undoLastAction() {
+      if (actionHistory.length === 0) {
+        showToast('복구할 이전 카드가 없습니다');
+        return;
+      }
+
+      const last = actionHistory.pop();
+      if (last.type === 'save') {
+        savedState.saved = savedState.saved.filter(item => item.id !== last.item.id);
+      }
+      removeSeen(last.item.id);
+
+      coreState.lastEditedBy = coreState.editorName || coreState.lastEditedBy || '';
+      coreState.lastSavedAt = new Date().toISOString();
+      forcedNextCardId = last.item.id;
+      closeSavedSheet();
+      closeModal();
+      persistAll();
+      renderAll();
+      showToast(`이전 카드 복구: ${last.item.full}`);
     }
 
     function addExcludeAnywhere(char) {
@@ -1469,6 +1553,8 @@
         }
 
         sanitizeStates();
+        actionHistory.length = 0;
+        forcedNextCardId = null;
         projectNameInput.value = coreState.projectName || '';
         editorNameInput.value = coreState.editorName || '';
         persistAll();
@@ -1522,6 +1608,8 @@
                 const backup = JSON.parse(raw);
                 coreState = { ...defaultCoreState(), ...(backup.coreState || {}) };
                 savedState = { ...defaultSavedState(), ...(backup.savedState || {}) };
+                actionHistory.length = 0;
+                forcedNextCardId = null;
                 sanitizeStates();
                 projectNameInput.value = coreState.projectName || '';
                 editorNameInput.value = coreState.editorName || '';
@@ -1602,9 +1690,16 @@
     }
 
     document.addEventListener('keydown', e => {
-      if (!currentCard) return;
       if (modalOverlay.classList.contains('show')) return;
+
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'z') {
+        e.preventDefault();
+        undoLastAction();
+        return;
+      }
+
       if (savedSheet.classList.contains('show')) return;
+      if (!currentCard) return;
 
       if (e.key === 'ArrowLeft') swipeAction('left', currentCard);
       if (e.key === 'ArrowRight') swipeAction('right', currentCard);
