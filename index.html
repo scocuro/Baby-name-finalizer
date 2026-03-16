@@ -11,10 +11,6 @@
       --text: #111827;
       --muted: #6b7280;
       --line: #e5e7eb;
-      --save: #059669;
-      --discard: #ef4444;
-      --exclude: #ea580c;
-      --fix: #2563eb;
       --shadow: 0 10px 30px rgba(15, 23, 42, 0.12);
       --radius: 24px;
     }
@@ -34,9 +30,7 @@
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans KR", Arial, sans-serif;
     }
 
-    body {
-      position: relative;
-    }
+    body { position: relative; }
 
     .drawer {
       position: fixed;
@@ -46,10 +40,7 @@
       transition: transform .24s ease;
       pointer-events: none;
     }
-
-    .drawer.open {
-      transform: translateY(0);
-    }
+    .drawer.open { transform: translateY(0); }
 
     .drawer-panel {
       background: rgba(255,255,255,.98);
@@ -62,7 +53,7 @@
     }
 
     .drawer-body {
-      max-height: min(62vh, 430px);
+      max-height: min(62vh, 460px);
       overflow-y: auto;
       padding: 14px 14px 12px;
     }
@@ -89,13 +80,8 @@
       cursor: pointer;
     }
 
-    .arrow {
-      transition: transform .2s ease;
-    }
-
-    .drawer.open .arrow {
-      transform: rotate(180deg);
-    }
+    .arrow { transition: transform .2s ease; }
+    .drawer.open .arrow { transform: rotate(180deg); }
 
     .title-row {
       display: flex;
@@ -136,16 +122,8 @@
       background: #eef2ff;
       cursor: pointer;
     }
-
-    .pill.red {
-      background: #fee2e2;
-      color: #991b1b;
-    }
-
-    .pill.gray {
-      background: #f3f4f6;
-      color: #374151;
-    }
+    .pill.red { background: #fee2e2; color: #991b1b; }
+    .pill.gray { background: #f3f4f6; color: #374151; }
 
     .meta-grid {
       display: grid;
@@ -190,10 +168,7 @@
       color: #374151;
     }
 
-    .chip-section {
-      margin-top: 10px;
-    }
-
+    .chip-section { margin-top: 10px; }
     .chip-title {
       font-size: 12px;
       font-weight: 900;
@@ -220,19 +195,8 @@
       background: #fff;
       color: #374151;
     }
-
-    .chip.exclude {
-      background: #fff7ed;
-      color: #9a3412;
-      border-color: #fed7aa;
-    }
-
-    .chip.fixed {
-      background: #eff6ff;
-      color: #1d4ed8;
-      border-color: #bfdbfe;
-    }
-
+    .chip.exclude { background: #fff7ed; color: #9a3412; border-color: #fed7aa; }
+    .chip.fixed { background: #eff6ff; color: #1d4ed8; border-color: #bfdbfe; }
     .chip button {
       border: none;
       background: transparent;
@@ -280,10 +244,7 @@
       padding: 16px;
       transition: transform .22s ease, opacity .22s ease;
     }
-
-    .card.dragging {
-      transition: none;
-    }
+    .card.dragging { transition: none; }
 
     .name {
       font-size: clamp(54px, 14vw, 90px);
@@ -345,26 +306,10 @@
       background: #f3f4f6;
       cursor: pointer;
     }
-
-    .footer-btn.save {
-      background: #ecfdf5;
-      color: #047857;
-    }
-
-    .footer-btn.discard {
-      background: #fef2f2;
-      color: #b91c1c;
-    }
-
-    .footer-btn.exclude {
-      background: #fff7ed;
-      color: #c2410c;
-    }
-
-    .footer-btn.fix {
-      background: #eff6ff;
-      color: #1d4ed8;
-    }
+    .footer-btn.save { background: #ecfdf5; color: #047857; }
+    .footer-btn.discard { background: #fef2f2; color: #b91c1c; }
+    .footer-btn.exclude { background: #fff7ed; color: #c2410c; }
+    .footer-btn.fix { background: #eff6ff; color: #1d4ed8; }
 
     .overlay {
       position: fixed;
@@ -377,10 +322,7 @@
       justify-content: center;
       padding: 16px;
     }
-
-    .overlay.show {
-      display: flex;
-    }
+    .overlay.show { display: flex; }
 
     .modal {
       width: min(440px, 100%);
@@ -389,31 +331,24 @@
       box-shadow: 0 20px 46px rgba(0,0,0,.18);
       overflow: hidden;
     }
-
-    .modal-head {
-      padding: 18px 18px 10px;
-    }
-
+    .modal-head { padding: 18px 18px 10px; }
     .modal-title {
       font-size: 18px;
       font-weight: 900;
       margin-bottom: 6px;
       letter-spacing: -0.03em;
     }
-
     .modal-desc {
       font-size: 13px;
       color: var(--muted);
       line-height: 1.55;
       font-weight: 700;
     }
-
     .modal-body {
       padding: 0 18px 18px;
       display: grid;
       gap: 8px;
     }
-
     .choice-btn {
       border: none;
       width: 100%;
@@ -427,25 +362,10 @@
       border: 1px solid var(--line);
       cursor: pointer;
     }
+    .choice-btn.soft-red { background: #fff7ed; border-color: #fed7aa; color: #9a3412; }
+    .choice-btn.soft-blue { background: #eff6ff; border-color: #bfdbfe; color: #1d4ed8; }
+    .choice-btn.cancel { background: #f3f4f6; color: #374151; }
 
-    .choice-btn.soft-red {
-      background: #fff7ed;
-      border-color: #fed7aa;
-      color: #9a3412;
-    }
-
-    .choice-btn.soft-blue {
-      background: #eff6ff;
-      border-color: #bfdbfe;
-      color: #1d4ed8;
-    }
-
-    .choice-btn.cancel {
-      background: #f3f4f6;
-      color: #374151;
-    }
-
-    /* 보관함 뒤 배경만 블러 */
     .saved-mask {
       position: fixed;
       inset: 0;
@@ -454,12 +374,8 @@
       background: rgba(17,24,39,.28);
       backdrop-filter: blur(4px);
     }
+    .saved-mask.show { display: block; }
 
-    .saved-mask.show {
-      display: block;
-    }
-
-    /* 보관함 패널은 블러 없이 선명하게 */
     .saved-sheet {
       position: fixed;
       inset: auto 0 0 0;
@@ -475,10 +391,7 @@
       flex-direction: column;
       will-change: transform;
     }
-
-    .saved-sheet.show {
-      transform: translateY(0);
-    }
+    .saved-sheet.show { transform: translateY(0); }
 
     .saved-head {
       padding: 16px;
@@ -491,31 +404,19 @@
       border-top-left-radius: 24px;
       border-top-right-radius: 24px;
     }
-
-    .saved-title {
-      font-size: 17px;
-      font-weight: 900;
-    }
-
-    .saved-tools {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-
+    .saved-title { font-size: 17px; font-weight: 900; }
+    .saved-tools { display: flex; gap: 8px; flex-wrap: wrap; }
     .saved-body {
       overflow: auto;
       padding: 14px 16px 24px;
       min-height: 180px;
       background: #fff;
     }
-
     .saved-grid {
       display: grid;
       grid-template-columns: repeat(2, minmax(0,1fr));
       gap: 8px;
     }
-
     .saved-item {
       background: #f8fafc;
       border: 1px solid var(--line);
@@ -526,7 +427,6 @@
       text-align: center;
       letter-spacing: -0.03em;
     }
-
     .empty {
       color: var(--muted);
       font-size: 14px;
@@ -555,28 +455,16 @@
       text-align: center;
       line-height: 1.4;
     }
-
     .toast.show {
       opacity: 1;
       transform: translateX(-50%) translateY(0);
     }
 
     @media (max-width: 480px) {
-      .meta-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .saved-grid {
-        grid-template-columns: 1fr 1fr;
-      }
-
-      .card {
-        height: min(68vh, 520px);
-      }
-
-      .footer-bar {
-        grid-template-columns: repeat(2, 1fr);
-      }
+      .meta-grid { grid-template-columns: 1fr; }
+      .saved-grid { grid-template-columns: 1fr 1fr; }
+      .card { height: min(68vh, 520px); }
+      .footer-bar { grid-template-columns: repeat(2, 1fr); }
     }
   </style>
 </head>
@@ -656,6 +544,7 @@
       <div class="saved-title">보관함</div>
       <div class="saved-tools">
         <button class="pill" id="copySavedBtn">목록 복사</button>
+        <button class="pill gray" id="exportSavedTxtBtn">TXT 저장</button>
         <button class="pill gray" id="closeSavedBtn">닫기</button>
       </div>
     </div>
@@ -675,26 +564,27 @@
     const syllables = [
       '건', '결', '경', '공', '관', '교', '권', '규', '균', '나',
       '누', '다', '단', '대', '도', '라', '락', '람', '랑', '량',
-      '령', '례', '로', '료', '류', '률', '리', '린', '마',
-      '무', '민', '바', '배', '별', '보', '본', '비', '빈',
+      '령', '례', '로', '론', '료', '류', '률', '리', '린', '마',
+      '면', '무', '민', '바', '배', '별', '보', '본', '비', '빈',
       '사', '산', '상', '새', '석', '선', '설', '성', '세', '소',
       '손', '솔', '송', '수', '승', '시', '식', '신', '아', '안',
       '어', '여', '연', '열', '영', '예', '오', '온', '올', '우',
       '운', '울', '원', '유', '윤', '율', '은', '의', '이', '익',
       '인', '자', '작', '장', '재', '적', '전', '정', '제', '조',
-      '종', '주', '준', '중', '지', '직', '진', '차', '찬',
-      '채', '천', '철', '초', '태', '하', '한', '해',
+      '종', '주', '준', '중', '지', '직', '진', '집', '차', '찬',
+      '채', '천', '철', '초', '탐', '태', '판', '하', '한', '해',
       '헌', '혁', '현', '혜', '호', '화', '환', '회', '효', '훈',
       '휘', '희'
     ];
 
-    const STORAGE_KEY = 'kang_name_relay_v7';
-    const VERSION = 7;
+    const STORAGE_KEY = 'kang_name_relay_v8';
+    const VERSION = 8;
     const syllablesHash = simpleHash(syllables.join('|'));
 
     const allNames = [];
     for (const first of syllables) {
       for (const second of syllables) {
+        if (first === second) continue;
         allNames.push({
           id: `${first}|${second}`,
           first,
@@ -714,6 +604,8 @@
       saved: [],
       seenIds: [],
       excludedSyllables: [],
+      excludedMiddle: [],
+      excludedEnd: [],
       fixedMiddle: null,
       fixedEnd: null
     });
@@ -743,6 +635,7 @@
     const savedBody = document.getElementById('savedBody');
     const closeSavedBtn = document.getElementById('closeSavedBtn');
     const copySavedBtn = document.getElementById('copySavedBtn');
+    const exportSavedTxtBtn = document.getElementById('exportSavedTxtBtn');
     const toastEl = document.getElementById('toast');
 
     projectNameInput.value = state.projectName || '';
@@ -765,12 +658,10 @@
     });
 
     exportBtn.addEventListener('click', exportSaveFile);
-
     importBtn.addEventListener('click', () => {
       importFileInput.value = '';
       importFileInput.click();
     });
-
     importFileInput.addEventListener('change', handleImportFile);
 
     resetBtn.addEventListener('click', () => {
@@ -791,11 +682,7 @@
               showToast('초기화했습니다');
             }
           },
-          {
-            label: '취소',
-            className: 'cancel',
-            onClick: closeModal
-          }
+          { label: '취소', className: 'cancel', onClick: closeModal }
         ]
       });
     });
@@ -803,15 +690,12 @@
     document.getElementById('saveActionBtn').addEventListener('click', () => {
       if (currentCard) swipeAction('left', currentCard);
     });
-
     document.getElementById('discardActionBtn').addEventListener('click', () => {
       if (currentCard) swipeAction('right', currentCard);
     });
-
     document.getElementById('excludeActionBtn').addEventListener('click', () => {
       if (currentCard) promptExclude(currentCard.data);
     });
-
     document.getElementById('fixActionBtn').addEventListener('click', () => {
       if (currentCard) promptFixStep1(currentCard.data);
     });
@@ -832,6 +716,8 @@
         showToast('복사에 실패했습니다');
       }
     });
+
+    exportSavedTxtBtn.addEventListener('click', exportSavedTxt);
 
     function renderAll() {
       pruneState();
@@ -865,18 +751,25 @@
       excludeChipsEl.innerHTML = '';
       fixedChipsEl.innerHTML = '';
 
-      if (state.excludedSyllables.length === 0) {
+      const excludeItems = [];
+      state.excludedSyllables.forEach(char => excludeItems.push({ type: 'all', char, label: `전체 배제: ${char}` }));
+      state.excludedMiddle.forEach(char => excludeItems.push({ type: 'middle', char, label: `가운데 배제: ${char}` }));
+      state.excludedEnd.forEach(char => excludeItems.push({ type: 'end', char, label: `끝 배제: ${char}` }));
+
+      if (excludeItems.length === 0) {
         excludeChipsEl.innerHTML = '<span class="chip">없음</span>';
       } else {
-        state.excludedSyllables.forEach(char => {
+        excludeItems.forEach(item => {
           const chip = document.createElement('span');
           chip.className = 'chip exclude';
-          chip.innerHTML = `배제: ${char} <button aria-label="remove">✕</button>`;
+          chip.innerHTML = `${item.label} <button aria-label="remove">✕</button>`;
           chip.querySelector('button').addEventListener('click', () => {
-            state.excludedSyllables = state.excludedSyllables.filter(x => x !== char);
+            if (item.type === 'all') state.excludedSyllables = state.excludedSyllables.filter(x => x !== item.char);
+            if (item.type === 'middle') state.excludedMiddle = state.excludedMiddle.filter(x => x !== item.char);
+            if (item.type === 'end') state.excludedEnd = state.excludedEnd.filter(x => x !== item.char);
             persist();
             renderAll();
-            showToast(`'${char}' 배제를 해제했습니다`);
+            showToast(`'${item.char}' 배제를 해제했습니다`);
           });
           excludeChipsEl.appendChild(chip);
         });
@@ -910,17 +803,14 @@
         savedBody.innerHTML = '<div class="empty">아직 보관한 이름이 없습니다.<br>카드를 왼쪽으로 스와이프하면 보관됩니다.</div>';
         return;
       }
-
       const grid = document.createElement('div');
       grid.className = 'saved-grid';
-
       [...state.saved].reverse().forEach(item => {
         const div = document.createElement('div');
         div.className = 'saved-item';
         div.textContent = item.full;
         grid.appendChild(div);
       });
-
       savedBody.innerHTML = '';
       savedBody.appendChild(grid);
     }
@@ -937,7 +827,6 @@
 
     function renderCard() {
       deck.innerHTML = '';
-
       const next = pickRandomRemaining();
 
       if (!next) {
@@ -977,7 +866,6 @@
       `;
       deck.appendChild(card);
       card.querySelector('#savedOpenBtn').addEventListener('click', openSavedSheet);
-
       currentCard = { el: card, data: next };
       bindCardSwipe(card, next);
     }
@@ -1014,7 +902,6 @@
         if (!dragging) return;
         dragging = false;
         card.classList.remove('dragging');
-
         const absX = Math.abs(dx);
         const absY = Math.abs(dy);
         const threshold = 78;
@@ -1023,11 +910,8 @@
           swipeAction(dx < 0 ? 'left' : 'right', { el: card, data });
         } else if (absY > threshold && absY > absX) {
           card.style.transform = '';
-          if (dy < 0) {
-            promptExclude(data);
-          } else {
-            promptFixStep1(data);
-          }
+          if (dy < 0) promptExclude(data);
+          else promptFixStep1(data);
         } else {
           card.style.transform = '';
         }
@@ -1035,14 +919,11 @@
 
       card.addEventListener('pointerup', endDrag);
       card.addEventListener('pointercancel', endDrag);
-      card.addEventListener('lostpointercapture', () => {
-        if (dragging) endDrag();
-      });
+      card.addEventListener('lostpointercapture', () => { if (dragging) endDrag(); });
     }
 
     function swipeAction(direction, payload) {
       const { el, data } = payload;
-
       if (direction === 'left') {
         addSaved(data);
         markSeen(data.id);
@@ -1053,7 +934,6 @@
         animateOut(el, window.innerWidth * 1.2, -18);
         showToast(`버림: ${data.full}`);
       }
-
       setTimeout(renderAll, 180);
     }
 
@@ -1066,7 +946,7 @@
     function promptExclude(data) {
       openChoiceModal({
         title: '어떤 음절을 배제할까요?',
-        desc: `선택한 음절이 들어간 이름은 앞으로 모두 제외됩니다.`,
+        desc: '선택한 음절이 들어간 이름은 앞으로 모두 제외됩니다.',
         choices: [
           {
             label: `'${data.first}' 배제`,
@@ -1088,11 +968,7 @@
               showToast(`'${data.second}'를 배제했습니다`);
             }
           },
-          {
-            label: '취소',
-            className: 'cancel',
-            onClick: closeModal
-          }
+          { label: '취소', className: 'cancel', onClick: closeModal }
         ]
       });
     }
@@ -1102,21 +978,9 @@
         title: '어떤 음절을 고정할까요?',
         desc: '고정하면 그 음절이 선택한 위치에 있는 카드들만 계속 나옵니다.',
         choices: [
-          {
-            label: `'${data.first}' 고정`,
-            className: 'soft-blue',
-            onClick: () => promptFixStep2(data.first)
-          },
-          {
-            label: `'${data.second}' 고정`,
-            className: 'soft-blue',
-            onClick: () => promptFixStep2(data.second)
-          },
-          {
-            label: '취소',
-            className: 'cancel',
-            onClick: closeModal
-          }
+          { label: `'${data.first}' 고정`, className: 'soft-blue', onClick: () => promptFixStep2(data.first) },
+          { label: `'${data.second}' 고정`, className: 'soft-blue', onClick: () => promptFixStep2(data.second) },
+          { label: '취소', className: 'cancel', onClick: closeModal }
         ]
       });
     }
@@ -1129,39 +993,68 @@
           {
             label: `가운데에 '${char}' 고정`,
             className: 'soft-blue',
-            onClick: () => {
-              state.fixedMiddle = char;
-              persist();
-              closeModal();
-              renderAll();
-              showToast(`가운데 '${char}' 고정`);
-            }
+            onClick: () => promptFixOtherSide(char, 'middle')
           },
           {
             label: `끝에 '${char}' 고정`,
             className: 'soft-blue',
+            onClick: () => promptFixOtherSide(char, 'end')
+          },
+          { label: '취소', className: 'cancel', onClick: closeModal }
+        ]
+      });
+    }
+
+    function promptFixOtherSide(char, position) {
+      const isMiddle = position === 'middle';
+      const question = isMiddle
+        ? `'${char}'을(를) 가운데로 고정했습니다. 끝에 '${char}'가 오는 경우도 다 없앨까요?`
+        : `'${char}'을(를) 끝으로 고정했습니다. 가운데에 '${char}'가 오는 경우도 다 없앨까요?`;
+
+      openChoiceModal({
+        title: '반대 위치도 함께 정리할까요?',
+        desc: question,
+        choices: [
+          {
+            label: '네, 그것도 빼줘',
+            className: 'soft-blue',
             onClick: () => {
-              state.fixedEnd = char;
-              persist();
-              closeModal();
-              renderAll();
-              showToast(`끝 '${char}' 고정`);
+              applyFix(char, position, true);
             }
           },
           {
-            label: '취소',
+            label: '아니요, 그대로 둘래요',
             className: 'cancel',
-            onClick: closeModal
+            onClick: () => {
+              applyFix(char, position, false);
+            }
           }
         ]
       });
+    }
+
+    function applyFix(char, position, excludeOpposite) {
+      if (position === 'middle') {
+        state.fixedMiddle = char;
+        if (excludeOpposite && !state.excludedEnd.includes(char)) state.excludedEnd.push(char);
+      } else {
+        state.fixedEnd = char;
+        if (excludeOpposite && !state.excludedMiddle.includes(char)) state.excludedMiddle.push(char);
+      }
+      persist();
+      closeModal();
+      renderAll();
+      if (excludeOpposite) {
+        showToast(`'${char}' 고정 + 반대 위치도 배제했습니다`);
+      } else {
+        showToast(`'${char}' 위치 고정`);
+      }
     }
 
     function openChoiceModal({ title, desc, choices }) {
       modalTitle.textContent = title;
       modalDesc.textContent = desc || '';
       modalBody.innerHTML = '';
-
       choices.forEach(choice => {
         const btn = document.createElement('button');
         btn.className = `choice-btn ${choice.className || ''}`;
@@ -1169,7 +1062,6 @@
         btn.addEventListener('click', choice.onClick);
         modalBody.appendChild(btn);
       });
-
       modalOverlay.classList.add('show');
     }
 
@@ -1197,7 +1089,10 @@
     }
 
     function passesRules(item) {
+      if (item.first === item.second) return false;
       if (state.excludedSyllables.includes(item.first) || state.excludedSyllables.includes(item.second)) return false;
+      if (state.excludedMiddle.includes(item.first)) return false;
+      if (state.excludedEnd.includes(item.second)) return false;
       if (state.fixedMiddle && item.first !== state.fixedMiddle) return false;
       if (state.fixedEnd && item.second !== state.fixedEnd) return false;
       return true;
@@ -1212,20 +1107,13 @@
 
     function addSaved(item) {
       if (!state.saved.some(x => x.id === item.id)) {
-        state.saved.push({
-          id: item.id,
-          full: item.full,
-          first: item.first,
-          second: item.second
-        });
+        state.saved.push({ id: item.id, full: item.full, first: item.first, second: item.second });
         persist();
       }
     }
 
     function markSeen(id) {
-      if (!state.seenIds.includes(id)) {
-        state.seenIds.push(id);
-      }
+      if (!state.seenIds.includes(id)) state.seenIds.push(id);
       state.lastEditedBy = state.editorName || state.lastEditedBy || '';
       state.lastSavedAt = new Date().toISOString();
       persist();
@@ -1234,7 +1122,6 @@
     function pruneState() {
       const validByRules = new Set(getFilteredPool().map(x => x.id));
       state.saved = state.saved.filter(item => validByRules.has(item.id));
-
       const validAll = new Set(allNames.map(x => x.id));
       state.seenIds = state.seenIds.filter(id => validAll.has(id));
 
@@ -1242,6 +1129,8 @@
       if (typeof state.editorName !== 'string') state.editorName = '';
       if (typeof state.lastEditedBy !== 'string') state.lastEditedBy = '';
       if (!Array.isArray(state.excludedSyllables)) state.excludedSyllables = [];
+      if (!Array.isArray(state.excludedMiddle)) state.excludedMiddle = [];
+      if (!Array.isArray(state.excludedEnd)) state.excludedEnd = [];
       if (!Array.isArray(state.saved)) state.saved = [];
       if (!Array.isArray(state.seenIds)) state.seenIds = [];
       persist();
@@ -1254,26 +1143,40 @@
       state.lastSavedAt = new Date().toISOString();
       persist();
 
-      const payload = {
-        ...state,
-        exportedAt: new Date().toISOString()
-      };
-
+      const payload = { ...state, exportedAt: new Date().toISOString() };
       const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json;charset=utf-8' });
       const a = document.createElement('a');
       const safeProject = (state.projectName || 'kang').replace(/[^\w가-힣-]+/g, '_');
       const safeEditor = (state.editorName || 'user').replace(/[^\w가-힣-]+/g, '_');
       const stamp = new Date().toISOString().replace(/[:.]/g, '-');
-
       a.href = URL.createObjectURL(blob);
       a.download = `${safeProject}_${safeEditor}_${stamp}.json`;
       document.body.appendChild(a);
       a.click();
       a.remove();
-
       setTimeout(() => URL.revokeObjectURL(a.href), 500);
       renderStats();
       showToast('세이브파일을 내보냈습니다');
+    }
+
+    function exportSavedTxt() {
+      const names = state.saved.map(x => x.full);
+      if (names.length === 0) {
+        showToast('보관함이 비어 있습니다');
+        return;
+      }
+      const text = names.join('\n');
+      const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+      const a = document.createElement('a');
+      const safeProject = (state.projectName || 'kang').replace(/[^\w가-힣-]+/g, '_');
+      const stamp = new Date().toISOString().replace(/[:.]/g, '-');
+      a.href = URL.createObjectURL(blob);
+      a.download = `${safeProject}_saved_names_${stamp}.txt`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      setTimeout(() => URL.revokeObjectURL(a.href), 500);
+      showToast('보관함 TXT를 저장했습니다');
     }
 
     async function handleImportFile(event) {
@@ -1283,23 +1186,17 @@
       try {
         const text = await file.text();
         const parsed = JSON.parse(String(text).trim());
-
-        if (!parsed || typeof parsed !== 'object') {
-          throw new Error('잘못된 JSON 형식입니다.');
-        }
-
+        if (!parsed || typeof parsed !== 'object') throw new Error('잘못된 JSON 형식입니다.');
         if (parsed.syllablesHash && parsed.syllablesHash !== syllablesHash) {
           throw new Error('이 파일은 현재 음절 리스트와 맞지 않습니다.');
         }
 
-        const nextState = {
-          ...defaultState(),
-          ...parsed
-        };
-
+        const nextState = { ...defaultState(), ...parsed };
         if (!Array.isArray(nextState.saved)) nextState.saved = [];
         if (!Array.isArray(nextState.seenIds)) nextState.seenIds = [];
         if (!Array.isArray(nextState.excludedSyllables)) nextState.excludedSyllables = [];
+        if (!Array.isArray(nextState.excludedMiddle)) nextState.excludedMiddle = [];
+        if (!Array.isArray(nextState.excludedEnd)) nextState.excludedEnd = [];
         if (typeof nextState.projectName !== 'string') nextState.projectName = '강씨 이름 1차';
         if (typeof nextState.editorName !== 'string') nextState.editorName = '';
         if (typeof nextState.lastEditedBy !== 'string') nextState.lastEditedBy = '';
@@ -1307,15 +1204,12 @@
         if (typeof nextState.fixedEnd === 'undefined') nextState.fixedEnd = null;
 
         state = nextState;
-
         projectNameInput.value = state.projectName || '';
         editorNameInput.value = state.editorName || '';
-
         persist();
         renderAll();
         closeModal();
         closeSavedSheet();
-
         showToast('세이브파일을 불러왔습니다');
       } catch (err) {
         console.error(err);
@@ -1361,7 +1255,6 @@
       if (!currentCard) return;
       if (modalOverlay.classList.contains('show')) return;
       if (savedSheet.classList.contains('show')) return;
-
       if (e.key === 'ArrowLeft') swipeAction('left', currentCard);
       if (e.key === 'ArrowRight') swipeAction('right', currentCard);
       if (e.key === 'ArrowUp') promptExclude(currentCard.data);
