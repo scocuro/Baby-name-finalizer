@@ -336,26 +336,8 @@
       border-radius: 22px;
       padding: 10px 12px;
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: repeat(4, 1fr);
       gap: 8px;
-      align-items: stretch;
-    }
-
-    .undo-reveal {
-      grid-column: 1 / -1;
-      max-height: 0;
-      overflow: hidden;
-      opacity: 0;
-      transform: translateY(10px);
-      transition: max-height .22s ease, opacity .22s ease, transform .22s ease;
-      pointer-events: none;
-    }
-
-    .footer-bar.show-undo .undo-reveal {
-      max-height: 72px;
-      opacity: 1;
-      transform: translateY(0);
-      pointer-events: auto;
     }
 
     .footer-btn {
@@ -389,19 +371,31 @@
       color: #1d4ed8;
     }
 
-    .footer-btn.undo {
+    .undo-peek {
+      position: fixed;
+      left: 50%;
+      bottom: 96px;
+      z-index: 18;
+      width: min(360px, calc(100vw - 56px));
+      border: none;
+      border-radius: 18px;
+      padding: 14px 16px;
+      font-size: 13px;
+      font-weight: 900;
       background: #f5f3ff;
       color: #6d28d9;
+      box-shadow: 0 12px 26px rgba(109,40,217,.16);
+      transform: translateX(-50%) translateY(16px);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .2s ease, transform .2s ease;
+      cursor: pointer;
     }
 
-    .footer-btn-wide {
-      width: 100%;
-      min-height: 48px;
-    }
-
-    .footer-btn:disabled {
-      opacity: .45;
-      cursor: not-allowed;
+    .undo-peek.show {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateX(-50%) translateY(0);
     }
 
     .overlay {
@@ -655,7 +649,11 @@
       }
 
       .footer-bar {
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .undo-peek {
+        width: calc(100vw - 48px);
       }
     }
   </style>
@@ -714,15 +712,14 @@
     <div class="deck" id="deck"></div>
   </main>
 
-  <div class="footer-bar" id="footerBar">
-    <button class="footer-btn save" id="saveActionBtn">좌상 = 보관</button>
-    <button class="footer-btn discard" id="discardActionBtn">우상 = 버림</button>
-    <button class="footer-btn exclude" id="excludeActionBtn">좌중 = 배제</button>
-    <button class="footer-btn fix" id="fixActionBtn">우중 = 고정</button>
-    <div class="undo-reveal" id="undoReveal">
-      <button class="footer-btn undo footer-btn-wide" id="undoActionBtn" disabled>이전 카드 복구</button>
-    </div>
+  <div class="footer-bar">
+    <button class="footer-btn save" id="saveActionBtn">왼쪽 = 보관</button>
+    <button class="footer-btn discard" id="discardActionBtn">오른쪽 = 버림</button>
+    <button class="footer-btn exclude" id="excludeActionBtn">위 = 음절 배제</button>
+    <button class="footer-btn fix" id="fixActionBtn">아래 = 위치 고정</button>
   </div>
+
+  <button class="undo-peek" id="undoPeekBtn" type="button">이전 카드 복구</button>
 
   <div class="overlay" id="modalOverlay">
     <div class="modal">
@@ -817,6 +814,8 @@
     let savedState = loadSavedState();
     let currentCard = null;
     let toastTimer = null;
+    let undoPeekTimer = null;
+    let bottomGestureStart = null;
     let forcedNextCardId = null;
     const actionHistory = [];
     const MAX_ACTION_HISTORY = 30;
@@ -845,9 +844,7 @@
     const copySavedBtn = document.getElementById('copySavedBtn');
     const exportSavedTxtBtn = document.getElementById('exportSavedTxtBtn');
     const exportSavedTxtBtnTop = document.getElementById('exportSavedTxtBtnTop');
-    const footerBar = document.getElementById('footerBar');
-    const undoReveal = document.getElementById('undoReveal');
-    const undoActionBtn = document.getElementById('undoActionBtn');
+    const undoPeekBtn = document.getElementById('undoPeekBtn');
     const toastEl = document.getElementById('toast');
 
     projectNameInput.value = coreState.projectName || '';
@@ -923,7 +920,10 @@
       if (currentCard) promptFixStep1(currentCard.data);
     });
 
-    undoActionBtn.addEventListener('click', undoLastAction);
+    undoPeekBtn.addEventListener('click', () => {
+      hideUndoPeek();
+      undoLastAction();
+    });
 
     savedMask.addEventListener('click', closeSavedSheet);
     closeSavedBtn.addEventListener('click', closeSavedSheet);
@@ -941,38 +941,6 @@
         showToast('복사에 실패했습니다');
       }
     });
-
-
-    document.addEventListener('wheel', e => {
-      if (modalOverlay.classList.contains('show') || savedSheet.classList.contains('show')) return;
-      if (e.deltaY < -8) {
-        revealUndoBar(true);
-      } else if (e.deltaY > 8) {
-        hideUndoBar();
-      }
-    }, { passive: true });
-
-    document.addEventListener('touchstart', e => {
-      if (e.touches && e.touches.length === 1) {
-        gestureStartY = e.touches[0].clientY;
-      }
-    }, { passive: true });
-
-    document.addEventListener('touchend', e => {
-      if (gestureStartY == null) return;
-      if (modalOverlay.classList.contains('show') || savedSheet.classList.contains('show')) {
-        gestureStartY = null;
-        return;
-      }
-      const endY = e.changedTouches && e.changedTouches[0] ? e.changedTouches[0].clientY : gestureStartY;
-      const dy = endY - gestureStartY;
-      if (dy < -45) {
-        revealUndoBar(true);
-      } else if (dy > 45) {
-        hideUndoBar();
-      }
-      gestureStartY = null;
-    }, { passive: true });
 
     function renderAll() {
       sanitizeStates();
@@ -1088,6 +1056,7 @@
     }
 
     function openSavedSheet() {
+      hideUndoPeek();
       savedMask.classList.add('show');
       savedSheet.classList.add('show');
     }
@@ -1418,30 +1387,10 @@
       updateUndoButton();
     }
 
-    function revealUndoBar(autoHide = false) {
-      if (!footerBar || actionHistory.length === 0) return;
-      footerBar.classList.add('show-undo');
-      if (undoRevealTimer) clearTimeout(undoRevealTimer);
-      if (autoHide) {
-        undoRevealTimer = setTimeout(() => {
-          if (actionHistory.length > 0) hideUndoBar();
-        }, 2200);
-      }
-    }
-
-    function hideUndoBar() {
-      if (!footerBar) return;
-      if (undoRevealTimer) clearTimeout(undoRevealTimer);
-      footerBar.classList.remove('show-undo');
-    }
-
     function updateUndoButton() {
-      if (!undoActionBtn) return;
-      undoActionBtn.disabled = actionHistory.length === 0;
-      undoActionBtn.textContent = actionHistory.length === 0 ? '이전 카드 복구' : `이전 카드 복구 (${actionHistory.length})`;
-      if (actionHistory.length === 0) {
-        hideUndoBar();
-      }
+      if (!undoPeekBtn) return;
+      undoPeekBtn.textContent = actionHistory.length === 0 ? '이전 카드 복구' : `이전 카드 복구 (${actionHistory.length})`;
+      if (actionHistory.length === 0) hideUndoPeek();
     }
 
     function removeSeen(id) {
@@ -1469,8 +1418,8 @@
       closeModal();
       persistAll();
       renderAll();
+      hideUndoPeek();
       showToast(`이전 카드 복구: ${last.item.full}`);
-      revealUndoBar(true);
     }
 
     function addExcludeAnywhere(char) {
@@ -1762,6 +1711,21 @@
       return String(hash);
     }
 
+    function showUndoPeek() {
+      if (actionHistory.length === 0) {
+        showToast('복구할 이전 카드가 없습니다');
+        return;
+      }
+      clearTimeout(undoPeekTimer);
+      undoPeekBtn.classList.add('show');
+      undoPeekTimer = setTimeout(() => undoPeekBtn.classList.remove('show'), 2600);
+    }
+
+    function hideUndoPeek() {
+      clearTimeout(undoPeekTimer);
+      if (undoPeekBtn) undoPeekBtn.classList.remove('show');
+    }
+
     function showToast(message) {
       clearTimeout(toastTimer);
       toastEl.textContent = message;
@@ -1778,15 +1742,6 @@
         return;
       }
 
-      if (e.key === 'PageUp') {
-        revealUndoBar(true);
-        return;
-      }
-
-      if (e.key === 'PageDown' || e.key === 'Escape') {
-        hideUndoBar();
-      }
-
       if (savedSheet.classList.contains('show')) return;
       if (!currentCard) return;
 
@@ -1795,6 +1750,36 @@
       if (e.key === 'ArrowUp') promptExclude(currentCard.data);
       if (e.key === 'ArrowDown') promptFixStep1(currentCard.data);
     });
+
+
+    document.addEventListener('touchstart', e => {
+      if (e.touches.length !== 1) return;
+      if (modalOverlay.classList.contains('show') || savedSheet.classList.contains('show')) return;
+      const t = e.touches[0];
+      if (t.clientY >= window.innerHeight - 180) {
+        bottomGestureStart = { x: t.clientX, y: t.clientY };
+      } else {
+        bottomGestureStart = null;
+      }
+    }, { passive: true });
+
+    document.addEventListener('touchend', e => {
+      if (!bottomGestureStart || !e.changedTouches.length) return;
+      const t = e.changedTouches[0];
+      const dx = t.clientX - bottomGestureStart.x;
+      const dy = t.clientY - bottomGestureStart.y;
+      bottomGestureStart = null;
+      if (Math.abs(dy) > 36 && Math.abs(dy) > Math.abs(dx) && dy < 0) {
+        showUndoPeek();
+      }
+    }, { passive: true });
+
+    document.addEventListener('wheel', e => {
+      if (modalOverlay.classList.contains('show') || savedSheet.classList.contains('show')) return;
+      if (e.clientY >= window.innerHeight - 180 && e.deltaY < -24) {
+        showUndoPeek();
+      }
+    }, { passive: true });
 
     sanitizeStates();
     renderAll();
