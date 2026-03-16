@@ -336,8 +336,26 @@
       border-radius: 22px;
       padding: 10px 12px;
       display: grid;
-      grid-template-columns: repeat(5, 1fr);
+      grid-template-columns: repeat(2, 1fr);
       gap: 8px;
+      align-items: stretch;
+    }
+
+    .undo-reveal {
+      grid-column: 1 / -1;
+      max-height: 0;
+      overflow: hidden;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: max-height .22s ease, opacity .22s ease, transform .22s ease;
+      pointer-events: none;
+    }
+
+    .footer-bar.show-undo .undo-reveal {
+      max-height: 72px;
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
     }
 
     .footer-btn {
@@ -374,6 +392,11 @@
     .footer-btn.undo {
       background: #f5f3ff;
       color: #6d28d9;
+    }
+
+    .footer-btn-wide {
+      width: 100%;
+      min-height: 48px;
     }
 
     .footer-btn:disabled {
@@ -691,12 +714,14 @@
     <div class="deck" id="deck"></div>
   </main>
 
-  <div class="footer-bar">
-    <button class="footer-btn save" id="saveActionBtn">왼쪽 = 보관</button>
-    <button class="footer-btn discard" id="discardActionBtn">오른쪽 = 버림</button>
-    <button class="footer-btn undo" id="undoActionBtn" disabled>이전 카드 복구</button>
-    <button class="footer-btn exclude" id="excludeActionBtn">위 = 음절 배제</button>
-    <button class="footer-btn fix" id="fixActionBtn">아래 = 위치 고정</button>
+  <div class="footer-bar" id="footerBar">
+    <button class="footer-btn save" id="saveActionBtn">좌상 = 보관</button>
+    <button class="footer-btn discard" id="discardActionBtn">우상 = 버림</button>
+    <button class="footer-btn exclude" id="excludeActionBtn">좌중 = 배제</button>
+    <button class="footer-btn fix" id="fixActionBtn">우중 = 고정</button>
+    <div class="undo-reveal" id="undoReveal">
+      <button class="footer-btn undo footer-btn-wide" id="undoActionBtn" disabled>이전 카드 복구</button>
+    </div>
   </div>
 
   <div class="overlay" id="modalOverlay">
@@ -820,6 +845,8 @@
     const copySavedBtn = document.getElementById('copySavedBtn');
     const exportSavedTxtBtn = document.getElementById('exportSavedTxtBtn');
     const exportSavedTxtBtnTop = document.getElementById('exportSavedTxtBtnTop');
+    const footerBar = document.getElementById('footerBar');
+    const undoReveal = document.getElementById('undoReveal');
     const undoActionBtn = document.getElementById('undoActionBtn');
     const toastEl = document.getElementById('toast');
 
@@ -914,6 +941,38 @@
         showToast('복사에 실패했습니다');
       }
     });
+
+
+    document.addEventListener('wheel', e => {
+      if (modalOverlay.classList.contains('show') || savedSheet.classList.contains('show')) return;
+      if (e.deltaY < -8) {
+        revealUndoBar(true);
+      } else if (e.deltaY > 8) {
+        hideUndoBar();
+      }
+    }, { passive: true });
+
+    document.addEventListener('touchstart', e => {
+      if (e.touches && e.touches.length === 1) {
+        gestureStartY = e.touches[0].clientY;
+      }
+    }, { passive: true });
+
+    document.addEventListener('touchend', e => {
+      if (gestureStartY == null) return;
+      if (modalOverlay.classList.contains('show') || savedSheet.classList.contains('show')) {
+        gestureStartY = null;
+        return;
+      }
+      const endY = e.changedTouches && e.changedTouches[0] ? e.changedTouches[0].clientY : gestureStartY;
+      const dy = endY - gestureStartY;
+      if (dy < -45) {
+        revealUndoBar(true);
+      } else if (dy > 45) {
+        hideUndoBar();
+      }
+      gestureStartY = null;
+    }, { passive: true });
 
     function renderAll() {
       sanitizeStates();
@@ -1359,10 +1418,30 @@
       updateUndoButton();
     }
 
+    function revealUndoBar(autoHide = false) {
+      if (!footerBar || actionHistory.length === 0) return;
+      footerBar.classList.add('show-undo');
+      if (undoRevealTimer) clearTimeout(undoRevealTimer);
+      if (autoHide) {
+        undoRevealTimer = setTimeout(() => {
+          if (actionHistory.length > 0) hideUndoBar();
+        }, 2200);
+      }
+    }
+
+    function hideUndoBar() {
+      if (!footerBar) return;
+      if (undoRevealTimer) clearTimeout(undoRevealTimer);
+      footerBar.classList.remove('show-undo');
+    }
+
     function updateUndoButton() {
       if (!undoActionBtn) return;
       undoActionBtn.disabled = actionHistory.length === 0;
       undoActionBtn.textContent = actionHistory.length === 0 ? '이전 카드 복구' : `이전 카드 복구 (${actionHistory.length})`;
+      if (actionHistory.length === 0) {
+        hideUndoBar();
+      }
     }
 
     function removeSeen(id) {
@@ -1391,6 +1470,7 @@
       persistAll();
       renderAll();
       showToast(`이전 카드 복구: ${last.item.full}`);
+      revealUndoBar(true);
     }
 
     function addExcludeAnywhere(char) {
@@ -1696,6 +1776,15 @@
         e.preventDefault();
         undoLastAction();
         return;
+      }
+
+      if (e.key === 'PageUp') {
+        revealUndoBar(true);
+        return;
+      }
+
+      if (e.key === 'PageDown' || e.key === 'Escape') {
+        hideUndoBar();
       }
 
       if (savedSheet.classList.contains('show')) return;
